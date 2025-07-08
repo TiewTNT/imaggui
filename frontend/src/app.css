@@ -7,3 +7,24 @@
 @import '../magickwebui';
 
 @source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
+
+/* kill the ugly border */
+.drag-handle:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* optional: suppress dragging preview */
+.dnd-ghost {
+  opacity: 0.5;
+  border: 2px dashed #999;
+  background: #fafafa;
+}
+
+/* optional: where it will drop */
+.dnd-placeholder {
+  border: 2px dashed #0070f3;
+  background: #eef;
+  height: 40px; /* or match your widget height */
+}
+

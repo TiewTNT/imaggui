@@ -3,6 +3,7 @@ from pathlib import Path
 from io import BytesIO
 import base64
 from utils import get_image_format
+from typing import List
 
 
 class MagickBuffer:
@@ -29,15 +30,19 @@ class MagickBuffer:
         print('[BUFFER] Using input format', self._input_format)
         print('[BUFFER] Using output format', self._output_format)
 
-    def cmd(self, *args: str):
-        args = [part for arg in args for part in arg.split()]
+    def cmd(self, args: List[str]):
         proc = subprocess.Popen(
-            ['magick', f'{self._input_format}:-',
+            magick_command := ['magick', f'{self._input_format}:-',
                 *args, f'{self._output_format}:-'],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
+
+        print(
+            '[MAGICK] Running command:', ' '.join(magick_command)
+        )
+
         out, err = proc.communicate(input=self._buffer)
         if proc.returncode != 0:
             raise RuntimeError(f"ImageMagick error: {err.decode('utf-8')}")
@@ -47,6 +52,7 @@ class MagickBuffer:
             self.save(Path(self.cmd_save) / ('&'.join(
                 ['#'.join(command) for command in self.history]) + '.' + self._output_format))
 
+        self._input_format = self._output_format
         return self
 
     def save(self, output_file: str | Path):

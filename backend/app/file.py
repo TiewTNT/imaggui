@@ -4,6 +4,7 @@ from typing import List
 import zipfile
 import contextlib
 import os
+from fastapi import UploadFile
 
 temp_files = []
 
@@ -42,20 +43,22 @@ def delete_all():
     temp_files.clear()
 
 @contextlib.contextmanager
-def zip_temps(files: List[TempFile]):
+def zip_temps(files: List[TempFile], og_files: List[UploadFile]):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
     zip_path = Path(temp_file.name)
+    print('[ZIP] Zip path is', str(zip_path))
     temp_file.close()  # Close it so ZipFile can write to it
 
     try:
-
         with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:
-            for list_file in files:
-                zipf.write(list_file.path, arcname=list_file.path.name)
+            for list_file, list_og_file in zip(files, og_files):
+                zipf.write(list_file.path, arcname=Path(list_og_file.filename).stem + list_file.path.suffix)
         yield zip_path
 
     finally:
         try:
-            zip_path.unlink()
+            # zip_path.unlink()
+            # print('[ZIP] Cleanup successful')
+            ...
         except FileNotFoundError:
-            pass
+            print('[ZIP] File', str(zip_path), 'not found on cleanup')

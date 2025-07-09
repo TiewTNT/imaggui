@@ -8,3 +8,6 @@ def get_image_format(path: Path) -> str:
         text=True
     )
     return result.stdout.strip().lower()
+
+if __name__ == "__main__":
+    print(get_image_format(r'C:\Users\tntti\Downloads\output_four.png'))

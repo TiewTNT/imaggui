@@ -12,6 +12,8 @@ class MagickBuffer:
         with open(input_file, 'rb') as f:
             self._buffer = f.read()
 
+        self.input_path = str(input_file)
+
         if cmd_save:
             assert Path(cmd_save).is_dir()
 
@@ -31,9 +33,11 @@ class MagickBuffer:
         print('[BUFFER] Using output format', self._output_format)
 
     def cmd(self, args: List[str]):
+        magick_command = ['magick', f'{self._input_format}:-',
+                *args, f'{self._output_format}:-']
+
         proc = subprocess.Popen(
-            magick_command := ['magick', f'{self._input_format}:-',
-                *args, f'{self._output_format}:-'],
+            magick_command,   
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE

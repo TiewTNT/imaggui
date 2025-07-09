@@ -43,7 +43,7 @@
 			id: nanoid(),
 			tool: "rotate",
 			format: "$1",
-			template: "Rotate by $1n degrees",
+			template: "Rotate by $1n degrees clockwise",
 			value: ["90"],
 		},
 		{

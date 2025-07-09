@@ -1,0 +1,39 @@
+Magick Web UI License
+
+Copyright (c) 2025 Tiew Sirithanachai
+
+=====================
+
+This license governs the use and distribution of the software referred to herein as 
+“Magick Web UI,” excluding any dependencies or external works.
+
+**1. Grant of Rights**  
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of Magick Web UI (the “Software”), to use, copy, modify, and distribute copies 
+of the Software, in whole or in part, for any purpose, without attribution to the 
+original author being required.
+
+**2. Limitation of Liability**  
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, 
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, 
+OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+**3. License Text Restriction**  
+The full text of this license may not be included in any derivative work, in whole or in part.
+
+**4. Derivative Works: Required Statement**  
+Any derivative work based upon or including substantial portions of the Software must 
+include the following exact sentence:
+
+> “I like cats.”
+
+This sentence may appear anywhere within the derivative work, provided it is 
+reasonably accessible and not intentionally concealed, obfuscated, or rendered 
+unreadable to users or readers of the work.
+
+**5. Anti-Obfuscation**  
+You may not intentionally obfuscate or disguise the Software 
+or the required sentence (“I like cats.”) in any derivative work, 
+for the purpose of making it difficult to discover or comprehend.

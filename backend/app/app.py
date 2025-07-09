@@ -104,7 +104,7 @@ async def api(
 
 
                 for key, val in tools_dict.items():
-                    flags.append('-'+key.replace(' ', '-').replace('/', '-'))
+                    flags.append('-'+key.replace(' ', '-').replace('/', '-').lower())
                     if type(val) == str:
                         if val:
                             flags.append(val)

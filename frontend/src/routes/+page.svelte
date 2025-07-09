@@ -40,29 +40,101 @@
 		// },
 	];
 
-	let all_templates: Template[] = [
-		{
-			id: nanoid(),
-			tool: "resize",
-			format: "$1x$2",
-			template: "Resize: $1n×$2n",
-			value: ["1000", "1000"],
-		},
-		{
-			id: nanoid(),
-			tool: "rotate",
-			format: "$1",
-			template: "Rotate by $1n degrees clockwise",
-			value: ["90"],
-		},
-		{
-			id: nanoid(),
-			tool: "blur",
-			format: "0x$1",
-			template: "Blur $1n",
-			value: ["5"],
-		},
-	];
+let all_templates: Template[] = [
+	{
+		id: nanoid(),
+		tool: "resize",
+		format: "$1x$2",
+		template: "Resize: $1n×$2n",
+		value: ["1000", "1000"],
+	},
+	{
+		id: nanoid(),
+		tool: "rotate",
+		format: "$1",
+		template: "Rotate by $1n degrees clockwise",
+		value: ["90"],
+	},
+	{
+		id: nanoid(),
+		tool: "blur",
+		format: "0x$1",
+		template: "Blur radius $1n",
+		value: ["5"],
+	},
+	{
+		id: nanoid(),
+		tool: "brightness/contrast",
+		format: "$1x$2",
+		template: "Brightness +$1n%, contrast +$2n%",
+		value: ["0", "0"],
+	},
+
+	{
+		id: nanoid(),
+		tool: "grayscale",
+		format: "Rec709Luminance",
+		template: "Convert to grayscale",
+		value: [],
+	},
+	{
+		id: nanoid(),
+		tool: "flip",
+		format: "",
+		template: "Flip vertically",
+		value: [],
+	},
+	{
+		id: nanoid(),
+		tool: "flop",
+		format: "",
+		template: "Flip horizontally",
+		value: [],
+	},
+	{
+		id: nanoid(),
+		tool: "crop",
+		format: "$1x$2+$3+$4",
+		template: "Crop to $1n×$2n at ($3n,$4n)",
+		value: ["300", "300", "0", "0"],
+	},
+	{
+		id: nanoid(),
+		tool: "quality",
+		format: "$1",
+		template: "Set compression quality to $1n",
+		value: ["85"],
+	},
+	{
+		id: nanoid(),
+		tool: "modulate",
+		format: "$1,$2,$3",
+		template: "Modulate: brightness $1n%, saturation $2n%, hue $3n°",
+		value: ["100", "100", "100"],
+	},
+	{
+		id: nanoid(),
+		tool: "sharpen",
+		format: "0x$1",
+		template: "Sharpen with radius $1n",
+		value: ["2"],
+	},
+	{
+		id: nanoid(),
+		tool: "negate",
+		format: "",
+		template: "Invert colors",
+		value: [],
+	},
+	{
+		id: nanoid(),
+		tool: "sepia tone",
+		format: "$1%",
+		template: "Sepia tone $1n%",
+		value: ["80"],
+	},
+];
+
 
 	let files: File[] = [];
 	let outputFormat: string = "png";
@@ -144,13 +216,13 @@
 </script>
 
 <section
-	class="min-h-screen flex flex-col items-center justify-start bg-surface-900 p-0"
+	class="min-h-screen flex flex-col items-center bg-surface-900 overflow-x-hidden px-4 pb-20"
 >
 	<div
-		class="w-full max-w-2xl space-y-6 p-8 bg-surface-800/80 rounded-2xl shadow-xl mt-10"
+		class="w-full max-w-5xl space-y-8 p-6 sm:p-10 bg-surface-800/90 rounded-2xl shadow-2xl mt-10"
 	>
-		<h1 class="text-3xl font-extrabold tracking-tight text-surface-50 mb-4">
-			Upload your files
+		<h1 class="text-4xl font-extrabold tracking-tight text-surface-50">
+			Magick Web UI
 		</h1>
 
 		<FileUpload
@@ -161,10 +233,10 @@
 			classes="w-full"
 		/>
 
-		<div class="flex gap-3 items-center">
+		<div class="flex flex-wrap gap-4 items-center">
 			<select
 				bind:value={outputFormat}
-				class="select select-filled-primary-500 w-fit bg-primary-950 text-surface-50 border-none focus:ring-primary-500 rounded-xl"
+				class="select select-filled-primary-500 bg-primary-950 text-surface-50 border-none focus:ring-primary-500 rounded-xl"
 			>
 				<option value="png">PNG</option>
 				<option value="jpg">JPG</option>
@@ -174,7 +246,7 @@
 			</select>
 
 			<button
-				class="btn btn-filled-primary-500 px-6 py-2 font-bold text-lg rounded-xl shadow transition disabled:opacity-40 disabled:cursor-not-allowed"
+				class="btn btn-filled-primary-500 px-6 py-2 font-bold text-lg rounded-xl shadow-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
 				on:click={upload}
 				disabled={!files.length}
 			>
@@ -198,7 +270,7 @@
 		>
 			{#each templates as t (t.id)}
 				<div
-					class="rounded-xl shadow bg-primary-950 p-3 flex items-center drag-handle gap-4"
+					class="rounded-xl shadow-lg bg-primary-950 p-4 flex items-center drag-handle gap-4 transition-all"
 					animate:flip="{{duration: 50}}"
 				>
 					<Widget
@@ -210,10 +282,10 @@
 			{/each}
 		</section>
 
-		<div class="flex gap-4 justify-center mt-8">
+		<div class="flex flex-wrap justify-center gap-3 pt-6 border-t border-surface-700">
 			{#each all_templates as t}
 				<button
-					class="btn btn-filled-primary-500 font-semibold px-4 py-2 rounded-xl shadow transition"
+					class="btn btn-filled-primary-500 font-medium px-5 py-2 rounded-xl shadow hover:scale-105 transition-transform"
 					on:click={() => {
 						templates = [
 							...templates,

@@ -1,9 +1,11 @@
 <script lang="ts">
-  export let template: string = 'I $1+HELLO+$2';
+      import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+  export let template: string = "I $1+HELLO+$2";
   export let value: string[] = [];
 
-  type TextPart = { type: 'text'; content: string };
-  type InputPart = { type: 'input'; index: number , in_type: string };
+  type TextPart = { type: "text"; content: string };
+  type InputPart = { type: "input"; index: number; in_type: string };
   type Part = TextPart | InputPart;
 
   let parts: Part[] = [];
@@ -17,9 +19,9 @@
       if (match) {
         const index = parseInt(match[1], 10) - 1;
         const in_type = match[2];
-        acc.push({ type: 'input', index, in_type });
+        acc.push({ type: "input", index, in_type });
       } else {
-        acc.push({ type: 'text', content: token });
+        acc.push({ type: "text", content: token });
       }
       return acc;
     }, []);
@@ -28,20 +30,22 @@
   $: parts = parseTemplate(template);
 
   const input_types: Record<string, string> = {
-    t: 'text',
-    n: 'number',
-    p: 'password',
-    d: 'date',
-    c: "color"
+    t: "text",
+    n: "number",
+    p: "password",
+    d: "date",
+    c: "color",
   };
+
+
 </script>
 
-<br/>
-<span class="bg-primary-950 p-5 rounded-xl shadow-lg">
+<br />
+<span class="flex bg-primary-950 p-5 rounded-xl shadow-lg">
   {#each parts as part}
-    {#if part.type === 'text'}
+    {#if part.type === "text"}
       {@html part.content}
-    {:else if part.type === 'input'}
+    {:else if part.type === "input"}
       <input
         bind:value={value[part.index]}
         class="inline-input input input-filled input-primary"
@@ -50,6 +54,14 @@
       />
     {/if}
   {/each}
+  <button
+    aria-label="Delete"
+    on:click={() => dispatch('delete')}
+    class="btn btn-icon btn-ghost hover:bg-primary-700 rounded-full ml-3"
+    style="padding: 0.375rem;"
+  >
+    <img src="/x.svg" alt="Cross" class="w-5 h-5" />
+  </button>
 </span>
 
 <style>

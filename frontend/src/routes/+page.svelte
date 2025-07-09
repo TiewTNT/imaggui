@@ -4,6 +4,15 @@
 	import { dndzone } from "svelte-dnd-action";
 	import { onMount } from "svelte";
 	import { nanoid } from "nanoid";
+	import { flip } from 'svelte/animate';
+
+	function toTitleCase(str: string) {
+		return str
+			.toLowerCase()
+			.split(" ")
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(" ");
+	}
 
 	// A template is a tool configuration string
 	type Template = {
@@ -134,69 +143,87 @@
 	}
 </script>
 
-<section class="min-h-screen flex flex-col items-center justify-start bg-surface-900 p-0">
-    <div class="w-full max-w-2xl space-y-6 p-8 bg-surface-800/80 rounded-2xl shadow-xl mt-10">
-        <h1 class="text-3xl font-extrabold tracking-tight text-surface-50 mb-4">Upload your files</h1>
+<section
+	class="min-h-screen flex flex-col items-center justify-start bg-surface-900 p-0"
+>
+	<div
+		class="w-full max-w-2xl space-y-6 p-8 bg-surface-800/80 rounded-2xl shadow-xl mt-10"
+	>
+		<h1 class="text-3xl font-extrabold tracking-tight text-surface-50 mb-4">
+			Upload your files
+		</h1>
 
-        <FileUpload
-            name="files"
-            accept="image/*"
-            onFileChange={handleUpload}
-            maxFiles={150}
-            classes="w-full"
-        />
+		<FileUpload
+			name="files"
+			accept="image/*"
+			onFileChange={handleUpload}
+			maxFiles={150}
+			classes="w-full"
+		/>
 
-        <div class="flex gap-3 items-center">
-            <select
-                bind:value={outputFormat}
-                class="select select-filled-primary-500 w-fit bg-primary-950 text-surface-50 border-none focus:ring-primary-500 rounded-xl"
-            >
-                <option value="png">PNG</option>
-                <option value="jpg">JPG</option>
-                <option value="gif">GIF</option>
-                <option value="webp">WEBP</option>
-                <option value="avif">AV1</option>
-            </select>
+		<div class="flex gap-3 items-center">
+			<select
+				bind:value={outputFormat}
+				class="select select-filled-primary-500 w-fit bg-primary-950 text-surface-50 border-none focus:ring-primary-500 rounded-xl"
+			>
+				<option value="png">PNG</option>
+				<option value="jpg">JPG</option>
+				<option value="gif">GIF</option>
+				<option value="webp">WEBP</option>
+				<option value="avif">AV1</option>
+			</select>
 
-            <button
-                class="btn btn-filled-primary-500 px-6 py-2 font-bold text-lg rounded-xl shadow transition disabled:opacity-40 disabled:cursor-not-allowed"
-                on:click={upload}
-                disabled={!files.length}
-            >
-                Upload
-            </button>
-        </div>
+			<button
+				class="btn btn-filled-primary-500 px-6 py-2 font-bold text-lg rounded-xl shadow transition disabled:opacity-40 disabled:cursor-not-allowed"
+				on:click={upload}
+				disabled={!files.length}
+			>
+				Upload
+			</button>
+		</div>
 
-        <section
-            use:dndzone={{
-                items: templates,
-                flipDurationMs: 150,
-            }}
-            on:consider={handleDndConsider}
-            on:finalize={handleDndFinalize}
-            class="grid gap-4"
-        >
-            {#each templates as t (t.id)}
-                <div class="rounded-xl shadow bg-primary-950 p-3 flex items-center drag-handle gap-4">
-                    <Widget bind:value={t.value} template={t.template} on:delete={() => deleteWidget(t.id)} />
-                </div>
-            {/each}
-        </section>
+		<section
+			use:dndzone={{
+				items: templates,
+				flipDurationMs: 150,
+				dropTargetStyle: {
+					outline: "2px dashed var(--color-primary-600)",
+					background: "transparent",
+					borderRadius: "0.75rem",
+				},
+			}}
+			on:consider={handleDndConsider}
+			on:finalize={handleDndFinalize}
+			class="grid gap-4"
+		>
+			{#each templates as t (t.id)}
+				<div
+					class="rounded-xl shadow bg-primary-950 p-3 flex items-center drag-handle gap-4"
+					animate:flip="{{duration: 50}}"
+				>
+					<Widget
+						bind:value={t.value}
+						template={t.template}
+						on:delete={() => deleteWidget(t.id)}
+					/>
+				</div>
+			{/each}
+		</section>
 
-        <div class="flex gap-4 justify-center mt-8">
-            {#each all_templates as t}
-                <button
-                    class="btn btn-filled-primary-500 font-semibold px-4 py-2 rounded-xl shadow transition"
-                    on:click={() => {
-                        templates = [
-                            ...templates,
-                            structuredClone({ ...t, id: nanoid() }),
-                        ];
-                    }}
-                >
-                    {t.tool.toUpperCase()}
-                </button>
-            {/each}
-        </div>
-    </div>
+		<div class="flex gap-4 justify-center mt-8">
+			{#each all_templates as t}
+				<button
+					class="btn btn-filled-primary-500 font-semibold px-4 py-2 rounded-xl shadow transition"
+					on:click={() => {
+						templates = [
+							...templates,
+							structuredClone({ ...t, id: nanoid() }),
+						];
+					}}
+				>
+					{toTitleCase(t.tool)}
+				</button>
+			{/each}
+		</div>
+	</div>
 </section>

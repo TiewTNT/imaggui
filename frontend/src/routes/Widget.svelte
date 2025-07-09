@@ -60,7 +60,7 @@
     class="btn btn-icon btn-ghost hover:bg-primary-700 rounded-full ml-3"
     style="padding: 0.375rem;"
   >
-    <img src="/x.svg" alt="X" class="w-5 h-5" />
+    <img src="/static/x.svg" alt="X" class="w-5 h-5" />
   </button>
 </span>
 

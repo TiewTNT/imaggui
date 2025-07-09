@@ -13,13 +13,13 @@ app = FastAPI()
 
 # Mount static assets
 app.mount("/_app", StaticFiles(directory="../../frontend/build/_app"), name="app")
+app.mount("/static", StaticFiles(directory="../../frontend/build"), name="static")
 
-# Serve index / fallback for SPA
-@app.get("/{full_path:path}")
-async def spa_catch_all(full_path: str):
+@app.get("/")
+async def index():
     return FileResponse("../../frontend/build/200.html")
-# CORS setup
 
+# CORS setup
 app.add_middleware(
     CORSMiddleware,
     allow_origins="*",

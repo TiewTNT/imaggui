@@ -21,10 +21,5 @@
   background: #fafafa;
 }
 
-/* optional: where it will drop */
-.dnd-placeholder {
-  border: 2px dashed #0070f3;
-  background: #eef;
-  height: 40px; /* or match your widget height */
-}
+
 

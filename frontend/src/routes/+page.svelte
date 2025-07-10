@@ -171,7 +171,7 @@
 					id: nanoid(),
 					tool: "modulate",
 					format: "$1,$2,$3",
-					template: "Modulate: bri $1%, sat $2%, hue $3°",
+					template: "Modulate: bri $1n%, sat $2n%, hue $3n°",
 					value: ["100", "100", "100"],
 					name: "Modulate",
 				},
@@ -269,10 +269,113 @@
 					format: "$1",
 					template: "Set JPEG quality $1n",
 					value: ["85"],
-					name: "Quality",
+					name: "JPEG Quality",
 				},
 			],
+		}, {
+	name: "Artistic & Stylize",
+	commands: [
+		{
+			id: nanoid(),
+			tool: "charcoal",
+			format: "$1",
+			template: "Charcoal effect with factor $1n",
+			value: ["2"],
+			name: "Charcoal",
 		},
+		{
+			id: nanoid(),
+			tool: "sketch",
+			format: "$1x$2+$3",
+			template: "Sketch: radius $1n, sigma $2n, angle $3n",
+			value: ["0", "10", "135"],
+			name: "Sketch",
+		},
+		{
+			id: nanoid(),
+			tool: "spread",
+			format: "$1",
+			template: "Spread by $1n pixels",
+			value: ["5"],
+			name: "Spread",
+		},
+		{
+			id: nanoid(),
+			tool: "implode",
+			format: "$1",
+			template: "Implode by factor $1n",
+			value: ["0.5"],
+			name: "Implode",
+		},
+		{
+			id: nanoid(),
+			tool: "swirl",
+			format: "$1",
+			template: "Swirl $1n degrees",
+			value: ["180"],
+			name: "Swirl",
+		},
+	],
+},
+{
+	name: "Distort & Morph",
+	commands: [
+		{
+			id: nanoid(),
+			tool: "wave",
+			format: "$1x$2",
+			template: "Wave distortion: amplitude $1n, wavelength $2n",
+			value: ["5", "50"],
+			name: "Wave",
+		},
+		{
+			id: nanoid(),
+			tool: "roll",
+			format: "+$1+$2",
+			template: "Roll: X $1n px, Y $2n px",
+			value: ["100", "100"],
+			name: "Roll",
+		},
+		{
+			id: nanoid(),
+			tool: "rotate",
+			format: "$1",
+			template: "Rotate $1n° (again)",
+			value: ["180"],
+			name: "Rotate 180°",
+		},
+	],
+},
+{
+	name: "Channel & Bit Depth",
+	commands: [
+		{
+			id: nanoid(),
+			tool: "depth",
+			format: "$1",
+			template: "Set bit depth to $1n",
+			value: ["8"],
+			name: "Bit Depth",
+		},
+		{
+			id: nanoid(),
+			tool: "alpha",
+			format: "$1",
+			template: "Alpha mode: $1",
+			value: ["on"],
+			name: "Alpha Channel",
+		},
+		{
+			id: nanoid(),
+			tool: "channel",
+			format: "$1",
+			template: "Work on channel: $1",
+			value: ["RGB"],
+			name: "Target Channel",
+		},
+	],
+}
+
 	];
 
 	let files: File[] = [];
@@ -315,13 +418,32 @@
 
 		console.log("[DEBUG] FormData:", [...formData.entries()]);
 
-		const res = await fetch("/api", {
+		const promise = fetch("/api", {
 			method: "POST",
 			body: formData,
 		});
 
+		await toaster.promise(promise, {
+			loading: { title: "Processing...", description: "Please wait" },
+			success: {
+				title: "Process successful. ",
+				description: "At least I THINK so...",
+			},
+			error: {
+				title: "An error occured.",
+				description: "",
+			},
+		});
+
+		const res = await promise;
+
 		if (!res.ok) {
-			console.error("Upload failed:", await res.json());
+			let res_json = await res.json();
+			console.error("Upload failed:", res_json);
+			toaster.error({
+				title: res_json.error,
+				description: res_json.message,
+			});
 			return;
 		}
 
@@ -352,8 +474,15 @@
 	function deleteWidget(id: string) {
 		templates = templates.filter((t) => t.id !== id);
 	}
+
+	import { Toaster, createToaster } from "@skeletonlabs/skeleton-svelte";
+
+	const toaster = createToaster({
+		placement: "bottom-end",
+	});
 </script>
 
+<Toaster {toaster}></Toaster>
 <section
 	class="min-h-screen flex flex-col items-center bg-surface-900 overflow-x-hidden px-4 pb-20"
 >

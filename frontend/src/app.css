@@ -4,7 +4,7 @@
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton/optional/presets';
-@import '../magickwebui';
+@import '../themes';
 
 @source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
 

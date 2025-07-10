@@ -176,7 +176,7 @@ let all_templates: Template[] = [
 
 		console.log("[DEBUG] FormData:", [...formData.entries()]);
 
-		const res = await fetch("http://localhost:10000/api", {
+		const res = await fetch("/api", {
 			method: "POST",
 			body: formData,
 		});

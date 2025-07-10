@@ -9,6 +9,10 @@ import json
 from collections import OrderedDict
 from fastapi.staticfiles import StaticFiles
 import asyncio
+import psutil
+import time
+
+mem = psutil.virtual_memory()
 
 app = FastAPI()
 
@@ -31,6 +35,17 @@ app.add_middleware(
 
 
 async def process_file(f, input_format, output_format, tools):
+    
+    start = time.time()
+    while mem.available < 1024*1024*24:
+        mem = psutil.virtual_memory()
+        if time.time() - start > 30:
+            return JSONResponse(
+            status_code=503,
+            content={"error": "Server is busy", "message": "The inconveniences of running a potato farm... Try waiting about 15 seconds for the spud to cool down."}
+        )
+        await asyncio.sleep(3)
+        # Chill...!
     try:
         assert type(f) == TempFile
 

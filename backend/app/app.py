@@ -68,7 +68,7 @@ async def process_file(f, input_format, output_format, tools):
         if output_format:
             saved_file = TempFile(suffix=output_format)
         else:
-            saved_file = TempFile(suffix=get_image_format(f))
+            saved_file = TempFile(suffix=get_image_format(f.path))
 
         await asyncio.to_thread(buffer.save, saved_file.path)
         

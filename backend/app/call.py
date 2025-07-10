@@ -21,7 +21,7 @@ class MagickBuffer:
             self._input_format = input_format
             print('[BUFFER] Input format has been specifies')
         else:
-            self._input_format = get_image_format(input_file)
+            self._input_format = get_image_format(Path(input_file))
 
         if output_format:
             self._output_format = output_format

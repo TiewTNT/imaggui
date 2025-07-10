@@ -3,13 +3,16 @@ import subprocess
 
 def get_image_format(path: Path) -> str:
     result = subprocess.run(
-        ["magick", "identify", "-format", "%m", str(path)],
-        capture_output=True,
+        ["magick", "identify", path],
+        stdout=subprocess.PIPE,
         text=True
     )
-    print('[INFO] The format of', str(path), 'is', result.stdout.strip().lower())
+    detected = result.stdout.strip().split()[1].lower()
+    if not detected:
+        detected = path.suffix[1:]
+    print('[INFO] The format of', str(path), 'is', detected)
     print('[INFO]', path, 'exists =', path.exists())
-    return result.stdout.strip().lower()
+    return detected
 
 if __name__ == "__main__":
-    print(get_image_format(r'C:\Users\tntti\Downloads\output_four.png'))
+    print(get_image_format(Path(r'C:\Users\tntti\Downloads\Portrait-of-a-cat-with-whiskers-visible(10).png')))

@@ -133,6 +133,13 @@ let all_templates: Template[] = [
 		template: "Sepia tone $1n%",
 		value: ["80"],
 	},
+	{
+		id: nanoid(),
+		tool: "kuwahara",
+		format: "0x$1",
+		template: "Kuwahara",
+		value: ["5"],
+	},
 ];
 
 

@@ -27,8 +27,8 @@ COPY --from=frontend-builder /app/frontend/build ./frontend/build
 # Install Python deps from requirements.txt
 RUN pip install -r backend/requirements.txt
 
-# Expose whatever port your Python server runs on (assume 8000)
+# Expose whatever port your Python server runs on (assume 10000)
 EXPOSE 10000
 
 # Start your server
-CMD ["python", "backend/run.py"]
+CMD python -m uvicorn backend.app.app:app --host 0.0.0.0 --port ${PORT}

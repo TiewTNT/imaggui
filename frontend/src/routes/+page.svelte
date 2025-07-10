@@ -238,6 +238,7 @@ let all_templates: Template[] = [
 			onFileChange={handleUpload}
 			maxFiles={150}
 			classes="w-full"
+			maxFileSize={1024*1024*32}
 		/>
 
 		<div class="flex flex-wrap gap-4 items-center">

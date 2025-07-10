@@ -243,3 +243,7 @@
 		</div>
 	</div>
 </section>
+
+<div class="sticky bottom-4 left-4 text-primary-50 text-sm px-3 py-1 rounded-md z-50 select-none">
+  0.0.3β
+</div>

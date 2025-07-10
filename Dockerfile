@@ -14,7 +14,9 @@ RUN npm run build
 FROM python:3.11-alpine
 
 # Install ImageMagick and any Python dependencies
-RUN apk add --no-cache imagemagick
+RUN apt-get update
+RUN apt-get upgrade
+RUN apt-get install imagemagick
 
 WORKDIR /app
 

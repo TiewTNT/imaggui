@@ -13,7 +13,7 @@ RUN npm run build
 # Stage 2: Python backend with built frontend and ImageMagick
 FROM python:3.11-alpine
 
-apk add --no-cache \
+RUN apk add --no-cache \
   imagemagick \
   imagemagick-libs \
   libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript

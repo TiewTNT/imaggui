@@ -10,6 +10,9 @@ def get_image_format(path: Path) -> str:
     )
     print('[INFO] Attempting', str(fr'magick "{str(path)}" -format "%m\n" info:'))
     detected = result.stdout.strip().lower()
+    if not detected:
+        print('[INFO] Using suffix fallback')
+        detected = path.suffix[1:]
     print('[INFO] The format of', str(path), 'is', detected)
     print('[INFO]', path, 'exists =', path.exists())
     return detected

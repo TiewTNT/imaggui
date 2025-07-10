@@ -11,14 +11,12 @@ RUN npm run build
 
 
 # Stage 2: Python backend with built frontend and ImageMagick
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
-RUN apt update && apt install -y \
-    imagemagick \
-    ghostscript \
-    libpng-dev libjpeg-dev libwebp-dev \
-    libtiff-dev libheif-dev libopenjp2-7-dev \
-    librsvg2-bin libwmf-dev
+apk add --no-cache \
+  imagemagick \
+  imagemagick-libs \
+  libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript
 
 WORKDIR /app
 

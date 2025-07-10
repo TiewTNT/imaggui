@@ -4,7 +4,7 @@
 	import { dndzone } from "svelte-dnd-action";
 	import { onMount } from "svelte";
 	import { nanoid } from "nanoid";
-	import { flip } from 'svelte/animate';
+	import { flip } from "svelte/animate";
 
 	function toTitleCase(str: string) {
 		return str
@@ -21,6 +21,7 @@
 		format: string; // e.g. "$1x$2"
 		template: string; // display version with types, e.g. "Resize: $1n×$2n"
 		value: string[]; // user-provided values from Widget
+		name: string; // Displayed name
 	};
 
 	let templates: Template[] = [
@@ -40,108 +41,239 @@
 		// },
 	];
 
-let all_templates: Template[] = [
-	{
-		id: nanoid(),
-		tool: "resize",
-		format: "$1x$2",
-		template: "Resize: $1n×$2n",
-		value: ["1000", "1000"],
-	},
-	{
-		id: nanoid(),
-		tool: "rotate",
-		format: "$1",
-		template: "Rotate by $1n degrees clockwise",
-		value: ["90"],
-	},
-	{
-		id: nanoid(),
-		tool: "blur",
-		format: "0x$1",
-		template: "Blur radius $1n",
-		value: ["5"],
-	},
-	{
-		id: nanoid(),
-		tool: "brightness/contrast",
-		format: "$1x$2",
-		template: "Brightness +$1n%, contrast +$2n%",
-		value: ["0", "0"],
-	},
+	type TemplateGroup = {
+		name: string;
+		commands: Template[];
+	};
 
-	{
-		id: nanoid(),
-		tool: "grayscale",
-		format: "Rec709Luminance",
-		template: "Convert to grayscale",
-		value: [],
-	},
-	{
-		id: nanoid(),
-		tool: "flip",
-		format: "",
-		template: "Flip vertically",
-		value: [],
-	},
-	{
-		id: nanoid(),
-		tool: "flop",
-		format: "",
-		template: "Flip horizontally",
-		value: [],
-	},
-	{
-		id: nanoid(),
-		tool: "crop",
-		format: "$1x$2+$3+$4",
-		template: "Crop to $1n×$2n at ($3n,$4n)",
-		value: ["300", "300", "0", "0"],
-	},
-	{
-		id: nanoid(),
-		tool: "quality",
-		format: "$1",
-		template: "Set compression quality to $1n",
-		value: ["85"],
-	},
-	{
-		id: nanoid(),
-		tool: "modulate",
-		format: "$1,$2,$3",
-		template: "Modulate: brightness $1n%, saturation $2n%, hue $3n°",
-		value: ["100", "100", "100"],
-	},
-	{
-		id: nanoid(),
-		tool: "sharpen",
-		format: "0x$1",
-		template: "Sharpen with radius $1n",
-		value: ["2"],
-	},
-	{
-		id: nanoid(),
-		tool: "negate",
-		format: "",
-		template: "Invert colors",
-		value: [],
-	},
-	{
-		id: nanoid(),
-		tool: "sepia tone",
-		format: "$1%",
-		template: "Sepia tone $1n%",
-		value: ["80"],
-	},
-	{
-		id: nanoid(),
-		tool: "kuwahara",
-		format: "$1",
-		template: "Kuwahara $1n",
-		value: ["5"],
-	},
-];
-
+	const all_templates_grouped: TemplateGroup[] = [
+		{
+			name: "Geometry & Transform",
+			commands: [
+				{
+					id: nanoid(),
+					tool: "resize",
+					format: "$1x$2",
+					template: "Resize: $1n×$2n",
+					value: ["1000", "1000"],
+					name: "Resize",
+				},
+				{
+					id: nanoid(),
+					tool: "rotate",
+					format: "$1",
+					template: "Rotate by $1n°",
+					value: ["90"],
+					name: "Rotate",
+				},
+				{
+					id: nanoid(),
+					tool: "crop",
+					format: "$1x$2+$3+$4",
+					template: "Crop to $1n×$2n at ($3n,$4n)",
+					value: ["300", "300", "0", "0"],
+					name: "Crop",
+				},
+				{
+					id: nanoid(),
+					tool: "flip",
+					format: "",
+					template: "Flip vertically",
+					value: [],
+					name: "Flip Vertical",
+				},
+				{
+					id: nanoid(),
+					tool: "flop",
+					format: "",
+					template: "Flip horizontally",
+					value: [],
+					name: "Flip Horizontal",
+				},
+				{
+					id: nanoid(),
+					tool: "thumbnail",
+					format: "$1x$2",
+					template: "Thumbnail: $1n×$2n",
+					value: ["200", "200"],
+					name: "Thumbnail",
+				},
+				{
+					id: nanoid(),
+					tool: "trim",
+					format: "",
+					template: "Trim edges",
+					value: [],
+					name: "Trim",
+				},
+				{
+					id: nanoid(),
+					tool: "border",
+					format: "$1",
+					template: "Border width $1px",
+					value: ["5"],
+					name: "Border",
+				},
+			],
+		},
+		{
+			name: "Color & Tone",
+			commands: [
+				{
+					id: nanoid(),
+					tool: "grayscale",
+					format: "Rec709Luminance",
+					template: "Convert to grayscale",
+					value: [],
+					name: "Grayscale",
+				},
+				{
+					id: nanoid(),
+					tool: "sepia-tone",
+					format: "$1%",
+					template: "Sepia tone $1n%",
+					value: ["80"],
+					name: "Sepia",
+				},
+				{
+					id: nanoid(),
+					tool: "negate",
+					format: "",
+					template: "Invert colors",
+					value: [],
+					name: "Invert",
+				},
+				{
+					id: nanoid(),
+					tool: "brightness-contrast",
+					format: "$1x$2",
+					template: "Brightness +$1n%, Contrast +$2n%",
+					value: ["0", "0"],
+					name: "Brightness/Contrast",
+				},
+				{
+					id: nanoid(),
+					tool: "auto-level",
+					format: "",
+					template: "Auto‑level color",
+					value: [],
+					name: "Auto Level",
+				},
+				{
+					id: nanoid(),
+					tool: "auto-gamma",
+					format: "",
+					template: "Auto‑gamma adjust",
+					value: [],
+					name: "Auto Gamma",
+				},
+				{
+					id: nanoid(),
+					tool: "modulate",
+					format: "$1,$2,$3",
+					template: "Modulate: bri $1%, sat $2%, hue $3°",
+					value: ["100", "100", "100"],
+					name: "Modulate",
+				},
+			],
+		},
+		{
+			name: "Sharpen & Noise",
+			commands: [
+				{
+					id: nanoid(),
+					tool: "blur",
+					format: "0x$1",
+					template: "Blur radius $1n",
+					value: ["5"],
+					name: "Blur",
+				},
+				{
+					id: nanoid(),
+					tool: "adaptive-blur",
+					format: "$1x$2",
+					template: "Adaptive blur radius $1n×$2n",
+					value: ["0", "2"],
+					name: "Adaptive Blur",
+				},
+				{
+					id: nanoid(),
+					tool: "sharpen",
+					format: "0x$1",
+					template: "Sharpen radius $1n",
+					value: ["2"],
+					name: "Sharpen",
+				},
+				{
+					id: nanoid(),
+					tool: "adaptive-sharpen",
+					format: "$1x$2",
+					template: "Adaptive sharpen radius $1n×$2n",
+					value: ["0", "1"],
+					name: "Adaptive Sharpen",
+				},
+				{
+					id: nanoid(),
+					tool: "despeckle",
+					format: "",
+					template: "Despeckle (reduce noise)",
+					value: [],
+					name: "Despeckle",
+				},
+				{
+					id: nanoid(),
+					tool: "wavelet-denoise",
+					format: "$1",
+					template: "Wavelet Denoise threshold $1n",
+					value: ["10"],
+					name: "Wavelet Denoise",
+				},
+			],
+		},
+		{
+			name: "Edge Enhancements",
+			commands: [
+				{
+					id: nanoid(),
+					tool: "unsharp",
+					format: "$1x$2+$3+$4",
+					template:
+						"Unsharp mask radius $1n, sigma $2n, gain $3n, threshold $4n",
+					value: ["0", "1", "1", "0"],
+					name: "Unsharp Mask",
+				},
+				{
+					id: nanoid(),
+					tool: "sigmoidal-contrast",
+					format: "$1x$2",
+					template: "Sigmoidal contrast $1n $2n",
+					value: ["3", "2"],
+					name: "Sigmoidal Contrast",
+				},
+				{
+					id: nanoid(),
+					tool: "kuwahara",
+					format: "$1x$2",
+					template: "Kuwahara radius $1n, sigma $2n",
+					value: ["3", "0"],
+					name: "Kuwahara Filter",
+				},
+			],
+		},
+		{
+			name: "Quality & Format",
+			commands: [
+				{
+					id: nanoid(),
+					tool: "quality",
+					format: "$1",
+					template: "Set JPEG quality $1n",
+					value: ["85"],
+					name: "Quality",
+				},
+			],
+		},
+	];
 
 	let files: File[] = [];
 	let outputFormat: string = "png";
@@ -238,7 +370,7 @@ let all_templates: Template[] = [
 			onFileChange={handleUpload}
 			maxFiles={150}
 			classes="w-full"
-			maxFileSize={1024*1024*32}
+			maxFileSize={1024 * 1024 * 32}
 		/>
 
 		<div class="flex flex-wrap gap-4 items-center">
@@ -279,7 +411,7 @@ let all_templates: Template[] = [
 			{#each templates as t (t.id)}
 				<div
 					class="rounded-xl shadow-lg bg-primary-950 p-4 flex items-center drag-handle gap-4 transition-all"
-					animate:flip="{{duration: 50}}"
+					animate:flip={{ duration: 50 }}
 				>
 					<Widget
 						bind:value={t.value}
@@ -290,19 +422,26 @@ let all_templates: Template[] = [
 			{/each}
 		</section>
 
-		<div class="flex flex-wrap justify-center gap-3 pt-6 border-t border-surface-700">
-			{#each all_templates as t}
-				<button
-					class="btn btn-filled-primary-500 font-medium px-5 py-2 rounded-xl shadow hover:scale-105 transition-transform"
-					on:click={() => {
-						templates = [
-							...templates,
-							structuredClone({ ...t, id: nanoid() }),
-						];
-					}}
-				>
-					{toTitleCase(t.tool)}
-				</button>
+		<div class="flex flex-wrap justify-center gap-3 pt-6">
+			{#each all_templates_grouped as group}
+				<div class="border-t border-surface-500">
+					<h2 class="">{group.name}</h2>
+					<div class="flex flex-wrap justify-center gap-3 pt-6">
+						{#each group.commands as t}
+							<button
+								class="btn btn-filled-primary-500 font-medium px-5 py-2 rounded-xl shadow hover:scale-105 transition-transform"
+								on:click={() => {
+									templates = [
+										...templates,
+										structuredClone({ ...t, id: nanoid() }),
+									];
+								}}
+							>
+								{toTitleCase(t.name)}
+							</button>
+						{/each}
+					</div>
+				</div>
 			{/each}
 		</div>
 	</div>

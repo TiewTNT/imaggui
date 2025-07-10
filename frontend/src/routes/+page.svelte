@@ -136,7 +136,7 @@ let all_templates: Template[] = [
 	{
 		id: nanoid(),
 		tool: "kuwahara",
-		format: "0x$1",
+		format: "$1",
 		template: "Kuwahara $1n",
 		value: ["5"],
 	},

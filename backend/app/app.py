@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import json
 from collections import OrderedDict
 from fastapi.staticfiles import StaticFiles
+import asyncio
 
 app = FastAPI()
 
@@ -29,6 +30,54 @@ app.add_middleware(
 )
 
 
+async def process_file(f, input_format, output_format, tools):
+    try:
+        assert type(f) == TempFile
+
+        buffer = await asyncio.to_thread(
+			MagickBuffer, input_file=f.path, input_format=input_format, output_format=output_format
+		)
+
+        if type(tools) == str and len(tools) > 0: # Check if use specified tools
+            try:
+                tools_dict = json.loads(tools, object_pairs_hook=OrderedDict)
+            except json.decoder.JSONDecodeError:
+                return JSONResponse(
+                status_code=500,
+                content={
+                    "error": "Tools was invalid JSON", "message": f"The tools should be in a proper JSON format"}
+            )
+
+            flags = []
+
+            print(f"[DEBUG] Saved {f.path}, size={Path(f.path).stat().st_size}")
+            with open(f.path, 'rb') as file:
+                print(f"[DEBUG] First bytes: {file.read(8)}")
+
+
+            for key, val in tools_dict.items():
+                flags.append('-'+key.replace(' ', '-').replace('/', '-'))
+                if type(val) == str:
+                    if val:
+                        flags.append(val)
+                else:
+                    flags.extend([v for v in val if v])
+
+            await asyncio.to_thread(buffer.cmd, flags)
+
+        if output_format:
+            saved_file = TempFile(suffix=output_format)
+        else:
+            saved_file = TempFile(suffix=get_image_format(f))
+
+        await asyncio.to_thread(buffer.save, saved_file.path)
+        
+        return saved_file
+    except Exception as e:
+        print(f'[ERROR] File {f.path} not processed properly.\n       → {e}')
+        return None
+
+
 # Main API endpoint
 
 @app.post("/api")
@@ -48,7 +97,7 @@ async def api(
 
     for f in files:
         if (secure_filename(f.filename) != f.filename) or not Path(f.filename).stem:
-            print(f"[SECURITY] Rejected file with unsafe name: {f.filename}")
+            print(f"[SECURITY] Using other name for file with unsafe name: {f.filename}")
         fname = secure_filename(f.filename)
         
         if input_format:
@@ -72,7 +121,8 @@ async def api(
                     content={
                         "error": "File too large", "message": f"Uploads are limited to around {size_limit/(1024**2)}MB total."}
                 )
-            temp_file.write_bytes(chunk)
+            temp_file.append_bytes(chunk)
+
 
     # For processed files
     saved_files = []
@@ -80,49 +130,12 @@ async def api(
     # Cleanup
     background_tasks.add_task(delete_all)
 
-    for f in user_files:
-        try:
-            assert type(f) == TempFile
-
-            buffer = MagickBuffer(input_file=f.path, input_format=input_format, output_format=output_format)
-
-            if type(tools) == str and len(tools) > 0: # Check if use specified tools
-                try:
-                    tools_dict = json.loads(tools, object_pairs_hook=OrderedDict)
-                except json.decoder.JSONDecodeError:
-                    return JSONResponse(
-                    status_code=500,
-                    content={
-                        "error": "Tools was invalid JSON", "message": f"The tools should be in a proper JSON format"}
-                )
-
-                flags = []
-
-                print(f"[DEBUG] Saved {f.path}, size={Path(f.path).stat().st_size}")
-                with open(f.path, 'rb') as file:
-                    print(f"[DEBUG] First bytes: {file.read(8)}")
-
-
-                for key, val in tools_dict.items():
-                    flags.append('-'+key.replace(' ', '-').replace('/', '-'))
-                    if type(val) == str:
-                        if val:
-                            flags.append(val)
-                    else:
-                        flags.extend([v for v in val if v])
-
-                buffer.cmd(flags)
-
-            if output_format:
-                saved_file = TempFile(suffix=output_format)
-            else:
-                saved_file = TempFile(suffix=get_image_format(f))
-
-            buffer.save(saved_file.path)
-
-            saved_files.append(saved_file)
-        except Exception as e:
-            print(f'[ERROR] File {f.path} not processed properly.\n       → {e}')
+    tasks = [
+        process_file(f, input_format, output_format, tools)
+        for f in user_files
+    ]
+    results = await asyncio.gather(*tasks)
+    saved_files = [r for r in results if r is not None]
 
     # In case no files were actually processed
     if len(saved_files) == 0:

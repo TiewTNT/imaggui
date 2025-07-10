@@ -7,6 +7,8 @@ def get_image_format(path: Path) -> str:
         capture_output=True,
         text=True
     )
+    print('[INFO] The format of', str(path), 'is', result.stdout.strip().lower())
+    print('[INFO]', path, 'exists =', path.exists())
     return result.stdout.strip().lower()
 
 if __name__ == "__main__":

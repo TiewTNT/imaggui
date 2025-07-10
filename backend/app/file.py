@@ -23,6 +23,10 @@ class TempFile():
         with open(self.path, "wb") as f:
             f.write(data)
 
+    def append_bytes(self, data: bytes):
+        with open(self.path, "ab") as f:
+            f.write(data)
+
     def delete(self):
         if self.path.exists():
             self.path.unlink()

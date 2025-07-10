@@ -30,5 +30,7 @@ RUN pip install -r backend/requirements.txt
 # Expose whatever port your Python server runs on (assume 10000)
 EXPOSE 10000
 
+WORKDIR backend/app
+
 # Start your server
-CMD python -m uvicorn backend.app.app:app --host 0.0.0.0 --port ${PORT}
+CMD python -m uvicorn app:app --host 0.0.0.0 --port ${PORT}

@@ -103,6 +103,7 @@
 		});
 
 		const res = await promise;
+		console.log(res)
 
 		if (!res.ok) {
 			let res_json = await res.json();

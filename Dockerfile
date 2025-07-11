@@ -17,6 +17,10 @@ RUN apk add --no-cache \
   imagemagick \
   imagemagick-libs \
   libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript
+      build-base \
+    python3-dev \
+    libffi-dev \
+    musl-dev \
 
 WORKDIR /app
 

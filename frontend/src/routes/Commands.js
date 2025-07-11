@@ -43,7 +43,6 @@ export const all_templates_grouped = [
     ]
   },
   { name: "Text", commands: [
-      { id: nanoid(), tool: "caption",           format: "'$1'",            template: 'Caption "$1t"',          value: ["400","200","Your Text"], name: "Caption" },
       { id: nanoid(), tool: "annotate",          format: "+$1+$2 '$3'",           template: 'Annotate +$1n+$2n: "$3t"',        value: ["10","10","© 2025"], name: "Annotate" },
       { id: nanoid(), tool: "draw",              format: "text $1,$2 '$3'",     template: 'Draw at $1n,$2n: "$3t"',            value: ["25","65","Hello"], name: "Draw Text" },
       { id: nanoid(), tool: "gravity",           format: "$1",               template: 'Gravity: "$1t"',                  value: ["SouthEast"],   name: "Gravity" }

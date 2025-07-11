@@ -35,7 +35,7 @@ app.add_middleware(
 
 
 async def process_file(f, input_format, output_format, tools):
-    
+    mem = psutil.virtual_memory()
     start = time.time()
     while mem.available < 1024*1024*24:
         mem = psutil.virtual_memory()

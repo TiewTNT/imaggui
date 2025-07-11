@@ -16,7 +16,7 @@ FROM python:3.11-alpine
 RUN apk add --no-cache \
   imagemagick \
   imagemagick-libs \
-  libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript
+  libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript\
       build-base \
     python3-dev \
     libffi-dev \

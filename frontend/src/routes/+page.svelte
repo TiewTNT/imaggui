@@ -5,7 +5,7 @@
 	import { onMount } from "svelte";
 	import { nanoid } from "nanoid";
 	import { flip } from "svelte/animate";
-	import {all_templates_grouped} from "./Commands.js"
+	import { all_templates_grouped } from "./Commands.js";
 
 	function toTitleCase(str: string) {
 		return str
@@ -41,9 +41,6 @@
 		// 	value: [],
 		// },
 	];
-
-
-	
 
 	let files: File[] = [];
 	let outputFormat: string = "png";
@@ -103,7 +100,7 @@
 		});
 
 		const res = await promise;
-		console.log(res)
+		console.log(res);
 
 		if (!res.ok) {
 			let res_json = await res.json();
@@ -151,13 +148,12 @@
 </script>
 
 <Toaster {toaster}></Toaster>
-<section
-	class="min-h-screen flex flex-col items-center bg-surface-900 overflow-x-hidden px-4 pb-20"
->
+<div class="w-full overflow-x-auto ">
+	<section class="min-w-[768px] sm:min-w-[1024px] lg:min-w-[1280px] mx-auto min-h-screen flex flex-col items-center bg-surface-900 px-4 pb-20">
 	<div
-		class="w-full max-w-5xl space-y-8 p-6 sm:p-10 bg-surface-800/90 rounded-2xl shadow-2xl mt-10"
+		class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800/90 rounded-3xl shadow-2xl mt-12"
 	>
-		<h1 class="text-4xl font-extrabold tracking-tight text-surface-50">
+		<h1 class="text-4xl font-extrabold text-surface-50 tracking-tight">
 			Magick Web UI
 		</h1>
 
@@ -166,14 +162,13 @@
 			accept="image/*"
 			onFileChange={handleUpload}
 			maxFiles={150}
-			classes="w-full"
 			maxFileSize={1024 * 1024 * 32}
 		/>
 
 		<div class="flex flex-wrap gap-4 items-center">
 			<select
 				bind:value={outputFormat}
-				class="select select-filled-primary-500 bg-primary-950 text-surface-50 border-none focus:ring-primary-500 rounded-xl"
+				class="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
 			>
 				<option value="png">PNG</option>
 				<option value="jpg">JPG</option>
@@ -183,7 +178,7 @@
 			</select>
 
 			<button
-				class="btn btn-filled-primary-500 px-6 py-2 font-bold text-lg rounded-xl shadow-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
+				class="btn bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
 				on:click={upload}
 				disabled={!files.length}
 			>
@@ -203,11 +198,11 @@
 			}}
 			on:consider={handleDndConsider}
 			on:finalize={handleDndFinalize}
-			class="grid gap-4"
+			class="grid gap-5"
 		>
 			{#each templates as t (t.id)}
 				<div
-					class="rounded-xl shadow-lg bg-primary-950 p-4 flex items-center drag-handle gap-4 transition-all"
+					class="rounded-2xl shadow-md bg-primary-600 p-5 flex items-center gap-4 drag-handle transition-transform hover:scale-[1.02]"
 					animate:flip={{ duration: 50 }}
 				>
 					<Widget
@@ -219,14 +214,16 @@
 			{/each}
 		</section>
 
-		<div class="flex flex-wrap justify-center gap-3 pt-6">
+		<div class="flex flex-col gap-10 pt-8">
 			{#each all_templates_grouped as group}
-				<div class="border-t border-surface-500">
-					<h2 class="">{group.name}</h2>
-					<div class="flex flex-wrap justify-center gap-3 pt-6">
+				<div class="pt-6 border-t border-surface-600">
+					<h2 class="text-xl font-bold text-surface-100 mb-4">
+						{group.name}
+					</h2>
+					<div class="flex flex-wrap justify-center gap-4">
 						{#each group.commands as t}
 							<button
-								class="btn btn-filled-primary-500 font-medium px-5 py-2 rounded-xl shadow hover:scale-105 transition-transform"
+								class="btn bg-primary-700 hover:bg-primary-600 text-white font-medium px-5 py-2 rounded-xl shadow-md transition-transform hover:scale-105"
 								on:click={() => {
 									templates = [
 										...templates,
@@ -243,7 +240,10 @@
 		</div>
 	</div>
 </section>
+</div>
 
-<div class="sticky bottom-4 left-4 text-primary-50 text-sm px-3 py-1 rounded-md z-50 select-none">
-  0.0.3β
+<div
+	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
+>
+	0.0.4β
 </div>

@@ -41,7 +41,7 @@
 </script>
 
 <br />
-<span class="flex bg-primary-950 p-5 rounded-xl shadow-lg">
+<span class="flex bg-primary-700 p-5 rounded-xl shadow-lg">
   {#each parts as part}
     {#if part.type === "text"}
       {@html part.content}

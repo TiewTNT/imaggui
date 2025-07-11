@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 import asyncio
 import psutil
 import time
+import shlex
 
 mem = psutil.virtual_memory()
 
@@ -74,7 +75,7 @@ async def process_file(f, input_format, output_format, tools):
                 flags.append('-'+key.replace(' ', '-').replace('/', '-').lower())
                 if type(val) == str:
                     if val:
-                        flags.append(val)
+                        flags.extend(shlex.split(val))
                 else:
                     flags.extend([v for v in val if v])
 

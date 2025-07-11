@@ -248,5 +248,5 @@
 <div
 	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
 >
-	0.1.4β
+	0.1.5β
 </div>

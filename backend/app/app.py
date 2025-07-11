@@ -12,6 +12,7 @@ import asyncio
 import psutil
 import time
 import shlex
+import ast
 
 mem = psutil.virtual_memory()
 
@@ -55,14 +56,6 @@ async def process_file(f, input_format, output_format, tools):
 		)
 
         if type(tools) == str and len(tools) > 0: # Check if use specified tools
-            try:
-                tools_dict = json.loads(tools, object_pairs_hook=OrderedDict)
-            except json.decoder.JSONDecodeError:
-                return JSONResponse(
-                status_code=500,
-                content={
-                    "error": "Tools was invalid JSON", "message": f"The tools should be in a proper JSON format"}
-            )
 
             flags = []
 
@@ -70,9 +63,10 @@ async def process_file(f, input_format, output_format, tools):
             with open(f.path, 'rb') as file:
                 print(f"[DEBUG] First bytes: {file.read(8)}")
 
+            print("[TOOLS]", tools)
+            for val in ast.literal_eval(tools):           
 
-            for key, val in tools_dict.items():
-                flags.append('-'+key.replace(' ', '-').replace('/', '-').lower())
+                print('[DEBUG] Using', val)
                 if type(val) == str:
                     if val:
                         flags.extend(shlex.split(val))

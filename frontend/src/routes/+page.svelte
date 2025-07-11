@@ -18,8 +18,7 @@
 	// A template is a tool configuration string
 	type Template = {
 		id: string;
-		tool: string;
-		format: string; // e.g. "$1x$2"
+		format: string | string[]; // e.g. "$1x$2"
 		template: string; // display version with types, e.g. "Resize: $1n×$2n"
 		value: string[]; // user-provided values from Widget
 		name: string; // Displayed name
@@ -69,14 +68,17 @@
 
 		formData.append("output_format", outputFormat);
 
-		const tools = Object.fromEntries(
-			templates.map((t) => {
-				const formatted = t.format.replace(/\$([0-9]+)/g, (_, i) => {
-					return t.value[parseInt(i) - 1] ?? "";
-				});
-				return [t.tool, formatted];
-			}),
-		);
+	const tools = templates.flatMap((t) => {
+		if (Array.isArray(t.format)) {
+			return t.format.map((fmt) =>
+				fmt.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
+			);
+		} else {
+			return [
+				t.format.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
+			];
+		}
+	})
 
 		formData.append("tools", JSON.stringify(tools));
 
@@ -148,101 +150,104 @@
 </script>
 
 <Toaster {toaster}></Toaster>
-<div class="w-full overflow-x-auto ">
-	<section class="min-w-[768px] sm:min-w-[1024px] lg:min-w-[1280px] mx-auto min-h-screen flex flex-col items-center bg-surface-900 px-4 pb-20">
-	<div
-		class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800/90 rounded-3xl shadow-2xl mt-12"
+<div class="w-full overflow-x-auto">
+	<section
+		class="min-w-[768px] sm:min-w-[1024px] lg:min-w-[1280px] mx-auto min-h-screen flex flex-col items-center bg-surface-900 px-4 pb-20"
 	>
-		<h1 class="text-4xl font-extrabold text-surface-50 tracking-tight">
-			Magick Web UI
-		</h1>
-
-		<FileUpload
-			name="files"
-			accept="image/*"
-			onFileChange={handleUpload}
-			maxFiles={150}
-			maxFileSize={1024 * 1024 * 32}
-		/>
-
-		<div class="flex flex-wrap gap-4 items-center">
-			<select
-				bind:value={outputFormat}
-				class="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
-			>
-				<option value="png">PNG</option>
-				<option value="jpg">JPG</option>
-				<option value="gif">GIF</option>
-				<option value="webp">WEBP</option>
-				<option value="avif">AV1</option>
-			</select>
-
-			<button
-				class="btn bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-				on:click={upload}
-				disabled={!files.length}
-			>
-				Upload
-			</button>
-			<a href="/about" class="text-primary-200">About</a>
-		</div>
-
-		
-
-		<section
-			use:dndzone={{
-				items: templates,
-				flipDurationMs: 150,
-				dropTargetStyle: {
-					outline: "2px dashed var(--color-primary-600)",
-					background: "transparent",
-					borderRadius: "0.75rem",
-				},
-			}}
-			on:consider={handleDndConsider}
-			on:finalize={handleDndFinalize}
-			class="grid gap-5"
+		<div
+			class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800/90 rounded-3xl shadow-2xl mt-12"
 		>
-			{#each templates as t (t.id)}
-				<div
-					class="rounded-2xl shadow-md bg-primary-600 p-5 flex items-center gap-4 drag-handle transition-transform hover:scale-[1.02]"
-					animate:flip={{ duration: 50 }}
-				>
-					<Widget
-						bind:value={t.value}
-						template={t.template}
-						on:delete={() => deleteWidget(t.id)}
-					/>
-				</div>
-			{/each}
-		</section>
+			<h1 class="text-4xl font-extrabold text-surface-50 tracking-tight">
+				Magick Web UI
+			</h1>
 
-		<div class="flex flex-col gap-10 pt-8">
-			{#each all_templates_grouped as group}
-				<div class="pt-6 border-t border-surface-600">
-					<h2 class="text-xl font-bold text-surface-100 mb-4">
-						{group.name}
-					</h2>
-					<div class="flex flex-wrap justify-center gap-4">
-						{#each group.commands as t}
-							<button
-								class="btn bg-primary-700 hover:bg-primary-600 text-white font-medium px-5 py-2 rounded-xl shadow-md transition-transform hover:scale-105"
-								on:click={() => {
-									templates = [
-										...templates,
-										structuredClone({ ...t, id: nanoid() }),
-									];
-								}}
-							>
-								{toTitleCase(t.name)}
-							</button>
-						{/each}
+			<FileUpload
+				name="files"
+				accept="image/*"
+				onFileChange={handleUpload}
+				maxFiles={150}
+				maxFileSize={1024 * 1024 * 32}
+			/>
+
+			<div class="flex flex-wrap gap-4 items-center">
+				<select
+					bind:value={outputFormat}
+					class="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
+				>
+					<option value="png">PNG</option>
+					<option value="jpg">JPG</option>
+					<option value="gif">GIF</option>
+					<option value="webp">WEBP</option>
+					<option value="avif">AV1</option>
+				</select>
+
+				<button
+					class="btn bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+					on:click={upload}
+					disabled={!files.length}
+				>
+					Upload
+				</button>
+				<a href="/about" class="text-primary-200">About</a>
+			</div>
+
+			<section
+				use:dndzone={{
+					items: templates,
+					flipDurationMs: 150,
+					dropTargetStyle: {
+						outline: "2px dashed var(--color-primary-600)",
+						background: "transparent",
+						borderRadius: "0.75rem",
+					},
+				}}
+				on:consider={handleDndConsider}
+				on:finalize={handleDndFinalize}
+				class="grid gap-5"
+			>
+				{#each templates as t (t.id)}
+					<div
+						class="rounded-2xl shadow-md bg-primary-600 p-5 flex items-center gap-4 drag-handle transition-transform hover:scale-[1.02]"
+						animate:flip={{ duration: 50 }}
+					>
+						<Widget
+							bind:value={t.value}
+							template={t.template}
+							on:delete={() => deleteWidget(t.id)}
+						/>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			</section>
+
+			<div class="flex flex-col gap-10 pt-8">
+				{#each all_templates_grouped as group}
+					<div class="pt-6 border-t border-surface-600">
+						<h2 class="text-xl font-bold text-surface-100 mb-4">
+							{group.name}
+						</h2>
+						<div class="flex flex-wrap justify-center gap-4">
+							{#each group.commands as t}
+								<button
+									class="btn bg-primary-700 hover:bg-primary-600 text-white font-medium px-5 py-2 rounded-xl shadow-md transition-transform hover:scale-105"
+									on:click={() => {
+										templates = [
+											...templates,
+											structuredClone({
+												...t,
+												id: nanoid(),
+											}),
+										];
+									}}
+								>
+									{toTitleCase(t.name)}
+								</button>
+							{/each}
+						</div>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-</section>
+	</section>
 </div>
 
 <div

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typemap>
+  <family name="sans">
+    <font name="DejaVu Sans" path="/usr/share/fonts/dejavu/DejaVuSans.ttf"/>
+  </family>
+</typemap>

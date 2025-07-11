@@ -13,31 +13,26 @@ RUN npm run build
 # Stage 2: Python backend with built frontend and ImageMagick
 FROM python:3.11-alpine
 
+# 1) Install ImageMagick, Fontconfig and DejaVu fonts
 RUN apk add --no-cache \
-  imagemagick \
-  imagemagick-libs \
-  libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript\
-      build-base \
-    python3-dev \
-    libffi-dev \
-    musl-dev \
-    fontconfig ttf-dejavu
+      imagemagick \
+      fontconfig \
+      libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript \
+      build-base python3-dev libffi-dev musl-dev\
+      font-dejavu \
+      mkfontscale \
+      mkfontdir 
+
+COPY docker/type.xml /etc/ImageMagick-7/type.xml
+
+# Rebuild font cache so ImageMagick can auto-discover DejaVu
+RUN fc-cache -f
 
 WORKDIR /app
-
-# Copy backend
 COPY backend ./backend
-
-# Copy built frontend
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
+RUN pip install --no-cache-dir -r backend/requirements.txt
 
-# Install Python deps from requirements.txt
-RUN pip install -r backend/requirements.txt
-
-# Expose whatever port your Python server runs on (assume 10000)
 EXPOSE 10000
-
 WORKDIR backend/app
-
-# Start your server
 CMD ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]

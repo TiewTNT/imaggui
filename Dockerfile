@@ -23,8 +23,6 @@ RUN apk add --no-cache \
       mkfontscale \
       mkfontdir 
 
-COPY docker/type.xml /etc/ImageMagick-7/type.xml
-
 # Rebuild font cache so ImageMagick can auto-discover DejaVu
 RUN fc-cache -f
 

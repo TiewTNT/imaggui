@@ -184,7 +184,10 @@
 			>
 				Upload
 			</button>
+			<a href="/about" class="text-primary-200">About</a>
 		</div>
+
+		
 
 		<section
 			use:dndzone={{
@@ -245,5 +248,5 @@
 <div
 	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
 >
-	0.0.4β
+	0.1.4β
 </div>

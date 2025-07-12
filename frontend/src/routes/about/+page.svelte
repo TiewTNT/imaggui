@@ -173,7 +173,7 @@
                 </h2>
                 <p>
                     We are not liable for damages of any kind. Our maximum
-                    liability for any issue will not exceed USD 100.
+                    liability for any issue will not exceed USD 0.1.
                 </p>
             </section>
 

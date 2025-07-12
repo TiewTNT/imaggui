@@ -114,8 +114,8 @@ async def api(
             temp_file = TempFile(suffix=input_format)
             print('[INFO] Created input TempFile with suffix', input_format)
         else:
-            temp_file = TempFile(suffix=Path(fname).suffix[1:])
-            print('[INFO] Created TempFile with suffix', Path(f.filename).suffix[1:])
+            temp_file = TempFile(suffix=get_image_format(Path(fname)))
+            print('[INFO] Created TempFile with suffix', get_image_format(Path(fname)))
         
         print('[INFO] User specifies output format:', str(output_format))
         user_files.append(temp_file)

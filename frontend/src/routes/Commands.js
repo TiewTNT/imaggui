@@ -14,7 +14,7 @@ export const all_templates_grouped = [
   },
   {
     name: "Color & Tone", commands: [
-      { id: nanoid(), format: "-grayscale", template: "Convert to grayscale", value: [], name: "Grayscale" },
+      { id: nanoid(), format: "-colorspace Gray", template: "Convert to grayscale", value: [], name: "Grayscale" },
       { id: nanoid(), format: "-sepia-tone $1%", template: "Sepia tone $1n%", value: ["80"], name: "Sepia" },
       { id: nanoid(), format: "-negate", template: "Invert colors", value: [], name: "Invert" },
       { id: nanoid(), format: "-brightness-contrast $1x$2", template: "Brightness +$1n%, Contrast +$2n%", value: ["0", "0"], name: "Brightness/Contrast" },
@@ -72,7 +72,6 @@ export const all_templates_grouped = [
   },
     {
     name: "Conversion", commands: [
-      { id: nanoid(), format: "-density $1", template: "Vector → raster density $1n", value: ["300"], name: "Density" },
       { id: nanoid(), format: "-units $1", template: "Set units to \"$1t\"", value: ["PixelsPerInch"], name: "Units" },
       { id: nanoid(), format: "-colorspace $1", template: "Convert to \"$1t\" colorspace", value: ["sRGB"], name: "Colorspace" },
       { id: nanoid(), format: "-background '$1'", template: "Background color: \"$1t\"", value: ["white"], name: "Background Color" },

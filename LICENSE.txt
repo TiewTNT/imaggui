@@ -34,6 +34,5 @@ reasonably accessible and not intentionally concealed, obfuscated, or rendered
 unreadable to users or readers of the work.
 
 **5. Anti-Obfuscation**  
-You may not intentionally obfuscate or disguise the Software 
-or the required sentence (“I like cats.”) in any derivative work, 
+You may not intentionally obfuscate the required sentence (“I like cats.”) in any derivative work, 
 for the purpose of making it difficult to discover or comprehend.

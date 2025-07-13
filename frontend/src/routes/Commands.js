@@ -88,7 +88,7 @@ export const all_templates_grouped = [
       { id: nanoid(), format: "-strip", template: "Strip metadata", value: [], name: "Strip Metadata" },
       { id: nanoid(), format: "-depth $1", template: "Bit depth $1n", value: ["8"], name: "Bit Depth" },
       { id: nanoid(), format: "-alpha $1", template: "Alpha: \"$1t\"", value: ["on"], name: "Alpha Channel" },
-      { id: nanoid(), format: "-channel $1", template: "$1s{All Channels:All;Red:Red;Green:Green;Blue:Blue;Alpha:Alpha;RGB:RGB;RGBA:RGBA;}", name: "Channel" }
+      { id: nanoid(), format: "-channel $1", template: "$1s{All Channels:All;Red:Red;Green:Green;Blue:Blue;Alpha:Alpha;RGB:RGB;RGBA:RGBA;}", value: ["All"], name: "Channel" }
     ]
   }
 ];

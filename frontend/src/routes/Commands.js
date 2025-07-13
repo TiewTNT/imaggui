@@ -52,7 +52,7 @@ export const all_templates_grouped = [
       { id: nanoid(), format: "-font $4 -annotate +$1+$2 '$3'", template: "Annotate +$1n+$2n: \"$3t\" with font $4t", value: ["10", "10", "© 2025", "DejaVu-Sans-Mono"], name: "Annotate" },
       { id: nanoid(), format: `-font $4 -draw "text $1,$2 '$3'"`, template: "Draw at $1n,$2n: \"$3t\" with font $4t", value: ["25", "65", "Hello", "DejaVu-Sans-Mono"], name: "Draw Text" },
       { id: nanoid(), format: "-pointsize $1", template: "Point size: $1n", value: ["18"], name: "Point Size" },
-      { id: nanoid(), format: "-gravity $1", template: "Gravity: \"$1t\"", value: ["SouthEast"], name: "Gravity" }
+      { id: nanoid(), format: "-gravity $1", template: 'Gravity: "$1s{Top Left:NorthWest;Top:North;Top Right:NorthEast;Left:West;Center:Center;Right:East;Bottom Left:SouthWest;Bottom:South;Bottom Right:SouthEast;}"', value: ["SouthWest"], name: "Gravity" }
     ]
   },
   {
@@ -72,14 +72,13 @@ export const all_templates_grouped = [
   },
     {
     name: "Conversion", commands: [
-      { id: nanoid(), format: "-units $1", template: "Set units to \"$1t\"", value: ["PixelsPerInch"], name: "Units" },
-      { id: nanoid(), format: "-colorspace $1", template: "Convert to \"$1t\" colorspace", value: ["sRGB"], name: "Colorspace" },
+      { id: nanoid(), format: "-units $1", template: "Set units to \"$1s{Pixels per Inch:PixelsPerInch;Pixels per Centimeter:PixelsPerCentimeter;Undefined:Undefined;}\"", value: ["PixelsPerInch"], name: "Units" },
+      { id: nanoid(), format: "-colorspace $1", template: "Convert to \"$1s{sRGB:sRGB;Grayscale:Gray;CMYK:CMYK;Rec.709:Rec709;XYZ:XYZ;CIE Lab:Lab;}\" colorspace", value: ["sRGB"], name: "Colorspace" },
       { id: nanoid(), format: "-background '$1'", template: "Background color: \"$1t\"", value: ["white"], name: "Background Color" },
       { id: nanoid(), format: "-flatten", template: "Flatten all layers", value: [], name: "Flatten" },
       { id: nanoid(), format: "-alpha remove", template: "Remove alpha channel", value: [], name: "Remove Alpha" },
       { id: nanoid(), format: "-alpha background", template: "Replace transparency with background color", value: [], name: "Flatten Alpha to Background" },
-      { id: nanoid(), format: "-format $1", template: "Output format: \"$1t\"", value: ["png"], name: "Output Format" },
-      { id: nanoid(), format: "-type $1", template: "Image type: \"$1t\"", value: ["Grayscale"], name: "Image Type" },
+      { id: nanoid(), format: "-type $1", template: "Image type: \"$1s{Grayscale:Grayscale;True Color:TrueColor;Palette-Based:Palette;Black & White:Bilevel;}\"", value: ["Grayscale"], name: "Image Type" },
       { id: nanoid(), format: "-define $1=$2", template: "Define option: $1t = $2t", value: ["png:compression-level", "9"], name: "Define Compression" }
     ]
   },
@@ -89,7 +88,7 @@ export const all_templates_grouped = [
       { id: nanoid(), format: "-strip", template: "Strip metadata", value: [], name: "Strip Metadata" },
       { id: nanoid(), format: "-depth $1", template: "Bit depth $1n", value: ["8"], name: "Bit Depth" },
       { id: nanoid(), format: "-alpha $1", template: "Alpha: \"$1t\"", value: ["on"], name: "Alpha Channel" },
-      { id: nanoid(), format: "-channel $1", template: "Channel: \"$1t\"", value: ["RGB"], name: "Channel" }
+      { id: nanoid(), format: "-channel $1", template: "$1s{All Channels:All;Red:Red;Green:Green;Blue:Blue;Alpha:Alpha;RGB:RGB;RGBA:RGBA;}", name: "Channel" }
     ]
   }
 ];

@@ -172,7 +172,7 @@
 			<div class="flex flex-wrap gap-4 items-center">
 				<select
 					bind:value={outputFormat}
-					class="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
+					class="bg-primary-600 hover:bg-primary-500 text-primary-50 font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
 				>
 					<option value="png">PNG</option>
 					<option value="jpg">JPG</option>
@@ -253,5 +253,5 @@
 <div
 	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
 >
-	1.1.6β
+	1.2.6β
 </div>

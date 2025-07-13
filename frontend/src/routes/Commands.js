@@ -49,7 +49,7 @@ export const all_templates_grouped = [
   },
   {
     name: "Text", commands: [
-      { id: nanoid(), format: "-font $4 -annotate +$1+$2 '$3'", template: "Annotate +$1n+$2n: \"$3t\" with font $4t", value: ["10", "10", "© 2025", "DejaVu-Sans-Mono"], name: "Annotate" },
+      { id: nanoid(), format: "-font $4 -annotate +$1+$2 '$3'", template: "Annotate +$1n+$2n: \"$3t\" with font $4s{Sans Serif:DejaVu-Sans;Serif:DejaVu-Serif;Monospace:DejaVu-Sans-Mono;}", value: ["10", "10", "© 2025", "DejaVu-Sans-Mono"], name: "Annotate" },
       { id: nanoid(), format: `-font $4 -draw "text $1,$2 '$3'"`, template: "Draw at $1n,$2n: \"$3t\" with font $4t", value: ["25", "65", "Hello", "DejaVu-Sans-Mono"], name: "Draw Text" },
       { id: nanoid(), format: "-pointsize $1", template: "Point size: $1n", value: ["18"], name: "Point Size" },
       { id: nanoid(), format: "-gravity $1", template: 'Gravity: "$1s{Top Left:NorthWest;Top:North;Top Right:NorthEast;Left:West;Center:Center;Right:East;Bottom Left:SouthWest;Bottom:South;Bottom Right:SouthEast;}"', value: ["SouthWest"], name: "Gravity" }

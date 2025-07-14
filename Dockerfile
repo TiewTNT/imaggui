@@ -31,6 +31,10 @@ COPY backend ./backend
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
+
 EXPOSE 10000
 WORKDIR backend/app
+RUN python -m compileall .
+
+
 CMD ["python", "-m", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]

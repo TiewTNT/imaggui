@@ -18,6 +18,7 @@
 	// A template is a tool configuration string
 	type Template = {
 		id: string;
+		type: string; // The type of the flag, pre-input: pi, global: gb, after input: in, pre-output: po
 		format: string | string[]; // e.g. "$1x$2"
 		template: string; // display version with types, e.g. "Resize: $1n×$2n"
 		value: string[]; // user-provided values from Widget
@@ -25,20 +26,7 @@
 	};
 
 	let templates: Template[] = [
-		// {
-		// 	id: nanoid(),
-		// 	tool: "resize",
-		// 	format: "$1x$2",
-		// 	template: "Resize: $1n×$2n",
-		// 	value: [],
-		// },
-		// {
-		// 	id: nanoid(),
-		// 	tool: "rotate",
-		// 	format: "$1",
-		// 	template: "Rotate by $1n degrees",
-		// 	value: [],
-		// },
+
 	];
 
 	let files: File[] = [];
@@ -68,17 +56,23 @@
 
 		formData.append("output_format", outputFormat);
 
-	const tools = templates.flatMap((t) => {
-		if (Array.isArray(t.format)) {
-			return t.format.map((fmt) =>
-				fmt.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
-			);
-		} else {
-			return [
-				t.format.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
-			];
+		let tools: Record<string, Array<string>> = {
+			gb: [],
+			pi: [],
+			in: [],
+			po: []
 		}
-	})
+		for (let t of templates) {
+			if (Array.isArray(t.format)) {
+				tools[t.type].push( ...t.format.map((fmt) =>
+					fmt.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
+				));
+			} else {
+				tools[t.type].push( 
+					t.format.replace(/\$([0-9]+)/g, (_, i) => t.value[+i - 1] ?? "")
+				);
+			}
+		}
 
 		formData.append("tools", JSON.stringify(tools));
 
@@ -253,5 +247,5 @@
 <div
 	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
 >
-	1.2.7β
+	1.3.7β
 </div>

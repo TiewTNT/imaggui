@@ -33,8 +33,8 @@ class MagickBuffer:
         print('[BUFFER] Using input format', self._input_format)
         print('[BUFFER] Using output format', self._output_format)
 
-    def cmd(self, args: List[str]):
-        magick_command = ['magick', f'{self._input_format}:-', '-auto-orient',
+    def cmd(self, args: List[str], pre_args: List[str]):
+        magick_command = ['magick', *pre_args, f'{self._input_format}:-', '-auto-orient',
                 *args, '+repage', f'{self._output_format}:-']
 
         proc = subprocess.Popen(

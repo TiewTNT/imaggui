@@ -55,25 +55,33 @@ async def process_file(f, input_format, output_format, tools):
 			MagickBuffer, input_file=f.path, input_format=input_format, output_format=output_format
 		)
 
-        if type(tools) == str and len(tools) > 0: # Check if use specified tools
-
+        if type(tools) == str and len(tools) > 2: # Check if use specified tools
+            tools_dict = json.loads(tools)
+            flags_pre_input = []
             flags = []
 
             print(f"[DEBUG] Saved {f.path}, size={Path(f.path).stat().st_size}")
             with open(f.path, 'rb') as file:
                 print(f"[DEBUG] First bytes: {file.read(8)}")
 
-            print("[TOOLS]", tools)
-            for val in ast.literal_eval(tools):           
-
-                print('[DEBUG] Using', val)
-                if type(val) == str:
-                    if val:
-                        flags.extend(shlex.split(val))
+            pre_input = tools_dict["gb"] + tools_dict["pi"]
+            after_input = tools_dict["in"] + tools_dict["po"]
+            for flag in pre_input:           
+                print('[DEBUG] Using', flag)
+                if type(flag) == str:
+                    if flag:
+                        flags_pre_input.extend(shlex.split(flag))
                 else:
-                    flags.extend([v for v in val if v])
+                    flags_pre_input.extend([v for v in flag if v])
+            for flag in after_input:           
+                print('[DEBUG] Using', flag)
+                if type(flag) == str:
+                    if flag:
+                        flags.extend(shlex.split(flag))
+                else:
+                    flags.extend([v for v in flag if v])
 
-            await asyncio.to_thread(buffer.cmd, flags)
+            await asyncio.to_thread(buffer.cmd, flags, flags_pre_input)
 
         if output_format:
             saved_file = TempFile(suffix=output_format)

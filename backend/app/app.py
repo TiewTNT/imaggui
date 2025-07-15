@@ -119,8 +119,16 @@ async def api(
         fname = secure_filename(f.filename)
         
         if input_format:
-            temp_file = TempFile(suffix=input_format)
-            print('[INFO] Created input TempFile with suffix', input_format)
+            format_ext_dict = {
+                "png": "png",
+                "jpg": "jpg",
+                "gif": "gif",
+                "webp": "webp",
+                "avif": "avif"
+            }
+            input_ext = format_ext_dict[input_format.lower()]
+            temp_file = TempFile(suffix=input_ext)
+            print('[INFO] Created input TempFile with suffix', input_ext)
         else:
             temp_file = TempFile(suffix=get_image_format(Path(fname)))
             print('[INFO] Created TempFile with suffix', get_image_format(Path(fname)))

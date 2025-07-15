@@ -1,6 +1,9 @@
+<script>
+    import { ChevronLeft } from "@lucide/svelte";
+</script>
 <section class="bg-surface-900 text-surface-100 min-h-screen px-6 py-10">
     <a href="/" class="flex flex-wrap items-center"
-        ><img src="/static/back.svg" alt="Back" class="w-7 mr-3" />Back</a
+        ><ChevronLeft/>Back</a
     >
     <section
         class="min-h-screen bg-surface-900 text-surface-100 px-6 py-16 flex justify-center"

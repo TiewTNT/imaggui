@@ -183,7 +183,10 @@
 				>
 					Upload
 				</button>
+				<div class="grid">
 				<a href="/about" class="text-primary-200">About</a>
+				<a href="/licenses" class="text-primary-200">Third Party Licenses</a>
+				</div>
 			</div>
 
 			<section

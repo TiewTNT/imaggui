@@ -30,7 +30,7 @@ with open('+page.svelte', 'w', encoding='utf-8') as licenses:
                            Third Party Licenses
                            </h1> """)
     for file in node_modules.rglob('*'):
-        if file.stem.lower().strip() == 'license' and file.suffix not in ['js', 'ts', 'css', 'ico', 'svg', 'png', 'jpg', 'webp', 'tiff']:
+        if file.stem.lower().strip() == 'license' and file.suffix not in ['.js', '.ts', '.css', '.ico', '.svg', '.png', '.jpg', '.webp', '.tiff']:
             try:
                 package = file.relative_to(node_modules).parent
             except ValueError:

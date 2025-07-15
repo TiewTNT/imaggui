@@ -3,4 +3,3 @@ python-multipart
 uvicorn
 werkzeug
 psutil
-json

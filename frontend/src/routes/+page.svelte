@@ -7,6 +7,7 @@
 	import { flip } from "svelte/animate";
 	import { all_templates_grouped } from "./Commands.js";
 	
+	
 
 	function toTitleCase(str: string) {
 		return str

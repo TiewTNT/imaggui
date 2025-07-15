@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   export let template: string = "I $1+HELLO+$2";
+  import { X } from "@lucide/svelte";
 
   export let value: string[] = [];
 
@@ -93,7 +94,7 @@
     class="btn btn-icon btn-ghost hover:bg-primary-700 rounded-full ml-3"
     style="padding: 0.375rem;"
   >
-    <img src="/static/x.svg" alt="X" class="w-5 h-5" />
+    <X />
   </button>
 </span>
 

@@ -14,7 +14,7 @@ def safe_read(file: Path) -> str:
     return file.read_text(encoding='utf-8', errors='replace')
 
 
-with open('+page.svelte', 'a', encoding='utf-8') as licenses:
+with open('+page.svelte', 'w', encoding='utf-8') as licenses:
     licenses.write("""<script>
     import { ChevronLeft } from "@lucide/svelte";
 </script>
@@ -32,7 +32,7 @@ with open('+page.svelte', 'a', encoding='utf-8') as licenses:
     for file in node_modules.rglob('*'):
         if file.stem.lower().strip() == 'license' and file.suffix not in ['js', 'ts', 'css', 'ico', 'svg', 'png', 'jpg', 'webp', 'tiff']:
             try:
-                package = file.parts[file.parts.index('node_modules') + 1]
+                package = file.relative_to(node_modules).parent
             except ValueError:
                 package = "UNKNOWN"
             text = safe_read(file)
@@ -41,11 +41,16 @@ with open('+page.svelte', 'a', encoding='utf-8') as licenses:
             text = text.replace('<p>', '<p class="text-base sm:text-lg leading-relaxed break-words">').replace(
                 '<a ', '<a class="text-primary-400 italic" ')+'\n'
 
-            licenses.write(f'''<h2 class="text-3xl font-extrabold mb-8 text-center text-primary-400">
-                           License from: {package}
-                           </h2> 
+            licenses.write(f'''
+                           <details class="bg-surface-800 p-4 rounded-xl shadow mb-6">
+                           <summary class="cursor-pointer text-2xl font-bold text-primary-400">
+                           {package}
+                           </summary>
+                           <div class="h-4">
+                           </div>
                            {text}
-                           <div class="my-8 flex justify-center">
-  <hr class="w-1/2 sm:w-1/3" />
-</div>''')
+                               <div class="flex justify-center mt-6">
+        <hr class="w-[30%]" />
+    </div>
+                           </details>''')
     licenses.write("</div></section></section>")

@@ -25,6 +25,7 @@
 		template: string; // display version with types, e.g. "Resize: $1n×$2n"
 		value: string[]; // user-provided values from Widget
 		name: string; // Displayed name
+		tooltip: string; // hover toolip
 	};
 
 	let templates: Template[] = [
@@ -204,16 +205,19 @@
 				on:finalize={handleDndFinalize}
 				class="grid gap-5"
 			>
-				{#each templates as t (t.id)}
+				{#each templates as t (t.id)}		
 					<div
-						class="rounded-2xl shadow-md bg-primary-600 p-5 flex items-center gap-4 drag-handle transition-transform hover:scale-[1.02]"
+						class="rounded-2xl bg-transparent grid gap-4 drag-handle transition-transform hover:scale-[1.02] border-[1px] border-surface-600 backdrop-blur-lg"
 						animate:flip={{ duration: 50 }}
 					>
+<div class="tooltip-container">
 						<Widget
 							bind:value={t.value}
 							template={t.template}
 							on:delete={() => deleteWidget(t.id)}
 						/>
+						 <div class="tooltip-text">{t.tooltip}</div>
+</div>
 					</div>
 				{/each}
 			</section>
@@ -252,5 +256,5 @@
 <div
 	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
 >
-	1.4.9β
+	1.5.9β
 </div>

@@ -14,9 +14,50 @@
   box-shadow: none !important;
 }
 
+
 /* optional: suppress dragging preview */
 .dnd-ghost {
   opacity: 0.5;
   border: 2px dashed #999;
   background: #fafafa;
 }
+
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      width: 160px;
+      background-color: var(--color-surface-700);
+      color: var(--color-primary-50);
+      text-align: center;
+      border-radius: 4px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 80%; /* position above the element */
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* optional little arrow */
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: var(--color-surface-700) transparent transparent transparent;
+    }

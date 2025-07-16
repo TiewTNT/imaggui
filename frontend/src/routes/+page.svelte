@@ -155,7 +155,7 @@
 			class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800/90 rounded-3xl shadow-2xl mt-12"
 		>
 			<h1 class="text-4xl font-extrabold text-surface-50 tracking-tight">
-				IMaGUI
+				IMagGUI
 			</h1>
 
 			<FileUpload

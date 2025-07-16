@@ -10,11 +10,11 @@
     >
         <div class="max-w-3xl w-full space-y-10">
             <h1 class="text-5xl font-extrabold text-primary-400 text-center">
-                About IMGUI
+                About IMagGUI
             </h1>
 
             <p class="text-lg leading-relaxed">
-                IMaGUI is a GUI that wraps ImageMagick, a powerful CLI tool. <strong>I did not make ImageMagick. This app is not endorsed by ImageMagick Studio LLC.</strong>
+                IMagGUI is a GUI that wraps ImageMagick, a powerful CLI tool. <strong>I did not make ImageMagick. This app is not endorsed by ImageMagick Studio LLC.</strong>
             </p>
 
             <p class="text-lg leading-relaxed">
@@ -91,7 +91,7 @@
             <section>
                 <h2 class="text-2xl font-bold mb-2">1. Acceptance of Terms</h2>
                 <p>
-                    By accessing or using ImaGUI (the “Service”), you
+                    By accessing or using IMagGUI (the “Service”), you
                     agree to be bound by these Terms of Service (“ToS”). If you
                     do not agree, do not use the Service. We may update these
                     terms at any time. Continued use implies acceptance.
@@ -103,7 +103,7 @@
                     2. Description of Service
                 </h2>
                 <p>
-                    ImaGUI provides a browser-based image processing
+                    IMagGUI provides a browser-based image processing
                     interface powered by ImageMagick. You may upload, transform,
                     and download images via a provided toolchain.
                 </p>

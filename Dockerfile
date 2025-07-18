@@ -28,12 +28,16 @@ RUN fc-cache -f
 
 WORKDIR /app
 COPY backend ./backend
+COPY docker ./docker
 COPY --from=frontend-builder /app/frontend/build ./frontend/build
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
+# ImageTragick
+RUN mkdir -p /etc/ImageMagick-7 && cp docker/policy.xml /etc/ImageMagick-7/policy.xml
+
 
 EXPOSE 10000
-WORKDIR backend/app
+WORKDIR /app/backend/app
 RUN python -m compileall .
 
 

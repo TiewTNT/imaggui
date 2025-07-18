@@ -1,0 +1,27 @@
+services:
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./frontend/build:/srv
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+    expose:
+      - "10000"
+
+  ddns:
+    build:
+      context: ./ddns
+    expose:
+      - "12345" # for fun
+    depends_on:
+      - app
+
+      

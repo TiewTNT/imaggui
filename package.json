@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "license-checker": "^25.0.1"
-  },
-  "dependencies": {
-    "@lucide/svelte": "^0.525.0"
-  }
-}

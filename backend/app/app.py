@@ -18,13 +18,6 @@ mem = psutil.virtual_memory()
 
 app = FastAPI()
 
-# Mount static assets
-app.mount("/_app", StaticFiles(directory="../../frontend/build/_app"), name="app")
-app.mount("/static", StaticFiles(directory="../../frontend/build"), name="static")
-
-@app.get("/")
-async def index():
-    return FileResponse("../../frontend/build/200.html")
 
 # CORS setup
 app.add_middleware(

@@ -166,7 +166,7 @@ async def api(
     elif len(saved_files) == 1: # If there's only one file, just return it
         return FileResponse(saved_files[0].path, filename=str(Path(files[0].filename).with_suffix(saved_files[0].path.suffix)))
     else: # If there are multiple files, return a .zip archive
-        with zip_temps(saved_files, files) as zipped_path:
+        with zip_temps(saved_files, files, background_tasks) as zipped_path:
             background_tasks.add_task(zipped_path.unlink)
             return FileResponse(zipped_path, filename=f"{Path(files[0].filename).with_suffix('.zip')}", media_type="application/zip")
 

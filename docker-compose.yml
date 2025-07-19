@@ -1,5 +1,6 @@
 services:
   caddy:
+    container_name: caddy
     image: caddy:2
     ports:
       - "80:80"
@@ -9,19 +10,32 @@ services:
       - ./frontend/build:/srv
     depends_on:
       - app
+    networks:
+      default:
+        aliases:
+          - caddy
 
   app:
+    container_name: app
     build:
       context: .
     expose:
       - "10000"
+    networks:
+      default:
+        aliases:
+          - app
 
   ddns:
+    container_name: ddns
     build:
       context: ./ddns
     expose:
       - "12345" # for fun
     depends_on:
       - app
-
+    networks:
+      default:
+        aliases:
+          - ddns
       

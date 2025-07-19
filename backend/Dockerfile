@@ -1,16 +1,3 @@
-# Stage 1: Build frontend
-FROM node:20-alpine AS frontend-builder
-
-WORKDIR /app/frontend
-
-COPY frontend/package*.json ./
-RUN npm install
-
-COPY frontend ./
-RUN npm run build
-
-
-# Stage 2: Python backend with built frontend and ImageMagick
 FROM python:3.11-alpine
 
 # 1) Install ImageMagick, Fontconfig and DejaVu fonts
@@ -27,9 +14,8 @@ RUN apk add --no-cache \
 RUN fc-cache -f
 
 WORKDIR /app
-COPY backend ./backend
+COPY . ./backend
 COPY docker ./docker
-COPY --from=frontend-builder /app/frontend/build ./frontend/build
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
 # ImageTragick

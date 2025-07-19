@@ -1,5 +1,5 @@
 # imaggui.duckdns.org imaggui.app {
-:80 {
+http://192.168.0.6 {
   root * /srv
 
   handle /_app/* {
@@ -11,7 +11,7 @@
   }
 
   handle /api* {
-    reverse_proxy app:10000
+    reverse_proxy backend:10000
   }
 
   handle {

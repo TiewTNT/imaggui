@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
   export let template: string = "I $1+HELLO+$2";
   import { X } from "@lucide/svelte";
@@ -17,14 +17,16 @@
 
   let parts: Part[] = [];
 
-  function parseTemplate(str: string): Part[] {
-    const regex = /\$[0-9]+s\{[^}]*\}|\$[0-9]+[a-zA-Z]|\+|[^$+]+/g;
+  function parseTemplate(str: string, v: string[]): Part[] {
+    const regex = /\$[0-9]+s\{[^}]*\}|\$[0-9]+[a-zA-Z]|\@\{[^}]*\}|[^$@]+/g;
+    let exprValue: (string|number)[] = v.map(coerceInputvalue)
 
     const rawTokens = str.match(regex) ?? [];
 
     return rawTokens.reduce<Part[]>((acc, token) => {
       const inputMatch = token.match(/^\$([0-9]+)([a-rt-zA-RT-Z])$/);
       const selectMatch = token.match(/^\$([0-9]+)s\{(.*:.*;)*\}$/);
+      const evalMatch = token.match(/^\@\{(.*)\}$/);
 
       if (inputMatch) {
         const index = parseInt(inputMatch[1], 10) - 1;
@@ -43,6 +45,17 @@
         }
 
         acc.push({ type: "select", index, options });
+      } else if (evalMatch) {
+        const expr = evalMatch[1];
+        console.log("Eval matched!")
+        let result;
+        try {
+          result = new Function("v", `return ${expr}`)(exprValue);
+          result = String(result);
+        } catch (e: any) {
+          result = `Error in expression: ${expr}\nDetails: ${e.message || e}`;
+        }
+        acc.push({ type: "text", content: result });
       } else {
         acc.push({ type: "text", content: token });
       }
@@ -51,7 +64,7 @@
     }, []);
   }
 
-  $: parts = parseTemplate(template);
+  $: parts = parseTemplate(template, value);
 
   const input_types: Record<string, string> = {
     t: "text",
@@ -60,6 +73,16 @@
     d: "date",
     c: "color",
   };
+
+  function coerceInputvalue(value: string) {
+    const isDecimal: Boolean = typeof value === "string" && /^(\d+(\.\d*)?|\.\d+)$/.test(value);
+    if (isDecimal) {
+      return Number(value)
+    } else {
+      return value
+    }
+  }
+ 
 </script>
 
 <br />

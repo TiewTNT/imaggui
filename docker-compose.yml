@@ -7,24 +7,39 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./frontend/build:/srv
+      - frontend_build:/srv
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
-      - app
+      - backend
+      - frontend
     networks:
       default:
         aliases:
           - caddy
 
-  app:
-    container_name: app
+  frontend:
     build:
       context: .
+      dockerfile: frontend/Dockerfile
+    volumes:
+      - frontend_build:/app/frontend/build
+    networks:
+      default:
+        aliases:
+          - frontend
+    command: tail -f /dev/null
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
     expose:
       - "10000"
     networks:
       default:
         aliases:
-          - app
+          - backend
 
   ddns:
     container_name: ddns
@@ -33,9 +48,13 @@ services:
     expose:
       - "12345" # for fun
     depends_on:
-      - app
+      - backend
     networks:
       default:
         aliases:
           - ddns
       
+volumes:
+  caddy_data:
+  caddy_config:
+  frontend_build:

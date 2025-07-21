@@ -6,10 +6,6 @@
     file_server
   }
 
-  handle /static/* {
-    file_server
-  }
-
   handle /api* {
     reverse_proxy backend:10000
   }

@@ -35,7 +35,6 @@ def parse(text: str, vars: dict):
 
     return ''.join(result)
 
-    
 
 if __name__ == "__main__":
     # print(get_image_format(Path(r'C:\Users\tntti\Downloads\Portrait-of-a-cat-with-whiskers-visible(10).png')))

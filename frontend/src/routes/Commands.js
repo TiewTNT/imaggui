@@ -4,6 +4,7 @@ export const all_templates_grouped = [
   {
     name: "Geometry & Transform", commands: [
       { id: nanoid(), format: "-resize $1x$2", template: "Resize to $1n×$2n (@{v[0] * v[1]} pixels)", value: ["1000", "1000"], name: "Resize", type: "in", tooltip: "Resize the image to the specified width and height in pixels." },
+      { id: nanoid(), format: "-resize @{w*$1}x@{h*$1}", template: "Scale $1n×", value: ["2"], name: "Scale", type: "in", tooltip: "Scale the image to the specified factor." },
       { id: nanoid(), format: "-rotate $1", template: "Rotate by $1n°", value: ["90"], name: "Rotate", type: "in", tooltip: "Rotate the image clockwise by the given number of degrees." },
       { id: nanoid(), format: "-crop $1x$2+$3+$4", template: "Crop to $1n×$2n at ($3n,$4n) (@{v[0] * v[1]} px)", value: ["300", "300", "0", "0"], name: "Crop", type: "in", tooltip: "Crop the image to the specified size starting from the given coordinates." },
       { id: nanoid(), format: "-flip", template: "Flip vertically", value: [], name: "Flip Vertical", type: "in", tooltip: "Flip the image along the horizontal axis (vertically)." },

@@ -4,7 +4,7 @@ from typing import List
 import zipfile
 import contextlib
 import os
-from fastapi import UploadFile
+from fastapi import UploadFile, BackgroundTasks
 
 temp_files = []
 
@@ -47,7 +47,7 @@ def delete_all():
     temp_files.clear()
 
 @contextlib.contextmanager
-def zip_temps(files: List[TempFile], og_files: List[UploadFile]):
+def zip_temps(files: List[TempFile], og_files: List[UploadFile], bg_tasks: BackgroundTasks):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".zip")
     zip_path = Path(temp_file.name)
     print('[ZIP] Zip path is', str(zip_path))
@@ -61,8 +61,7 @@ def zip_temps(files: List[TempFile], og_files: List[UploadFile]):
 
     finally:
         try:
-            # zip_path.unlink()
-            # print('[ZIP] Cleanup successful')
+            bg_tasks.add_task(zip_path.unlink)
             ...
         except FileNotFoundError:
             print('[ZIP] File', str(zip_path), 'not found on cleanup')

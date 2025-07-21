@@ -1,0 +1,14 @@
+
+                        <details class="bg-surface-800 p-4 rounded-xl shadow mb-6">
+                        <summary class="cursor-pointer text-2xl font-bold text-primary-400">
+                        @types\cookie
+                        </summary>
+                        <div class="h-4">
+                        </div>
+                        <pre><code>MIT License&lt;br/&gt;&lt;br/&gt;    Copyright (c) Microsoft Corporation.&lt;br/&gt;&lt;br/&gt;    Permission is hereby granted, free of charge, to any person obtaining a copy&lt;br/&gt;    of this software and associated documentation files (the "Software"), to deal&lt;br/&gt;    in the Software without restriction, including without limitation the rights&lt;br/&gt;    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&lt;br/&gt;    copies of the Software, and to permit persons to whom the Software is&lt;br/&gt;    furnished to do so, subject to the following conditions:&lt;br/&gt;&lt;br/&gt;    The above copyright notice and this permission notice shall be included in all&lt;br/&gt;    copies or substantial portions of the Software.&lt;br/&gt;&lt;br/&gt;    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&lt;br/&gt;    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&lt;br/&gt;    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&lt;br/&gt;    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&lt;br/&gt;    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&lt;br/&gt;    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&lt;br/&gt;    SOFTWARE&lt;br/&gt;
+</code></pre>
+
+                        <div class="flex justify-center mt-6">
+                        <hr class="w-[30%]" />
+                        </div>
+                        </details>

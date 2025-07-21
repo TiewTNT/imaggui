@@ -1,0 +1,60 @@
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - frontend_build:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      default:
+        aliases:
+          - caddy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    volumes:
+      - frontend_build:/app/frontend/build
+    networks:
+      default:
+        aliases:
+          - frontend
+    command: tail -f /dev/null
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    expose:
+      - "10000"
+    networks:
+      default:
+        aliases:
+          - backend
+
+  ddns:
+    container_name: ddns
+    build:
+      context: ./ddns
+    expose:
+      - "12345" # for fun
+    depends_on:
+      - backend
+    networks:
+      default:
+        aliases:
+          - ddns
+      
+volumes:
+  caddy_data:
+  caddy_config:
+  frontend_build:

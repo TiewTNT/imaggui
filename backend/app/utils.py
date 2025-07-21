@@ -1,6 +1,6 @@
 from pathlib import Path
 import subprocess
-import regex
+import re
 
 def get_image_format(path: Path) -> str:
     result = subprocess.run(
@@ -19,23 +19,21 @@ def get_image_format(path: Path) -> str:
     return detected
 
 
-def parse(text: str, vars: dict):
-    reg = r"\@\{.*?\}|[^@]+"
-    pattern = regex.compile(reg)
-    result = []
-    matches = pattern.findall(text)
-    print(matches)
-    for m in matches:
-        if reg_match := regex.match(r"\@\{(.*)\}", m):
-            
-            expr = reg_match.group(1)
-            result.append(str(int(round(eval(expr, {"__builtins__": {}}, vars)))))
-        else:
-            result.append(m)
+def parse(text: str):
+    
+    pattern = re.compile(r"(?<!\\)@\{(.*?)\}@")
+    escape_pattern = re.compile(r"\\@\{(.*?)\}@")
+    def replacer(m):
+        expr = m.group(1)
+        print(expr)
+        try:
+            return f'"%[fx:{expr}]"'
+        except Exception as e:
+            return f"[error: {e}: {m.group(0)}]"
 
-    return ''.join(result)
+    return escape_pattern.sub(lambda m: m.group(0)[1:], pat := pattern.sub(replacer, text))
 
 
 if __name__ == "__main__":
     # print(get_image_format(Path(r'C:\Users\tntti\Downloads\Portrait-of-a-cat-with-whiskers-visible(10).png')))
-    print(parse("@{w*2}x@{h*2}", {}))
+    print(parse(r"@{2*2}@x@{2*2}@", {}))

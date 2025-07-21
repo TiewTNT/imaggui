@@ -18,7 +18,7 @@
   let parts: Part[] = [];
 
   function parseTemplate(str: string, v: string[]): Part[] {
-    const regex = /\$[0-9]+s\{[^}]*\}|\$[0-9]+[a-zA-Z]|\@\{[^}]*\}|[^$@]+/g;
+    const regex = /\$[0-9]+s\{[^}]*\}|\$[0-9]+[a-zA-Z]|@\{.*?\}@|[^$@]+/g;
     let exprValue: (string|number)[] = v.map(coerceInputvalue)
 
     const rawTokens = str.match(regex) ?? [];

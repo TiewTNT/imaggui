@@ -7,7 +7,6 @@ from file import *
 from utils import *
 from werkzeug.utils import secure_filename
 import json
-from PIL import Image
 import asyncio
 import psutil
 import time
@@ -61,14 +60,7 @@ async def process_file(f, input_format, output_format, tools):
             pre_input = tools_dict["gb"] + tools_dict["pi"]
             after_input = tools_dict["in"] + tools_dict["po"]
             for flag in pre_input:
-                img = Image.open(f.path)
-
-                flag = parse(flag, {
-                    "w": img.width,
-                    "h": img.height,
-                    "size": img.size,
-                    "info": img.info,
-                })
+                flag = parse(flag)
                 
                 print('[DEBUG] Using', flag)
                 if type(flag) == str:
@@ -78,15 +70,6 @@ async def process_file(f, input_format, output_format, tools):
                     flags_pre_input.extend([v for v in flag if v])
             for flag in after_input:
                 print('[DEBUG] Using', flag)
-                img = Image.open(f.path)
-
-                flag = parse(flag, {
-                    "w": img.width,
-                    "h": img.height,
-                    "size": img.size,
-                    "info": img.info,
-                })
-
                 if type(flag) == str:
                     if flag:
                         flags.extend(shlex.split(flag))

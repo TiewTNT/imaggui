@@ -3,14 +3,16 @@ import { nanoid } from "nanoid";
 export const all_templates_grouped = [
   {
     name: "Geometry & Transform", commands: [
-      { id: nanoid(), format: "-resize $1x$2", template: "Resize to $1n×$2n (@{v[0] * v[1]} pixels)", value: ["1000", "1000"], name: "Resize", type: "in", tooltip: "Resize the image to the specified width and height in pixels." },
-      { id: nanoid(), format: "-resize @{w*$1}x@{h*$1}", template: "Scale $1n×", value: ["2"], name: "Scale", type: "in", tooltip: "Scale the image to the specified factor." },
+      { id: nanoid(), format: "-resize $1x$2", template: "Resize to $1n×$2n (@{v[0] * v[1]}@ pixels)", value: ["1000", "1000"], name: "Resize", type: "in", tooltip: "Resize the image to the specified width and height in pixels." },
+      { id: nanoid(), format: "-resize @{w*$1}@x@{h*$1}@", template: "Scale $1n×", value: ["2"], name: "Scale", type: "in", tooltip: "Scale the image to the specified factor." },
+      { id: nanoid(), format: "-resize @{w*($1/$2)}@x@{h*($1/$2)}@", template: "Resize $2s{width:w;height:h;} to $1n", value: ["1000", "w"], name: "Resize Side", type: "in", tooltip: "Resizes a given side of the image to the specified value while preserving the aspect ratio." },
+      { id: nanoid(), format: "-resize $1x$2!", template: "Stretch to $1n×$2n", value: ["1000", "1000"], name: "Stretch", type: "in", tooltip: "Resizes to fit specified dimensions by stretching the image." },
       { id: nanoid(), format: "-rotate $1", template: "Rotate by $1n°", value: ["90"], name: "Rotate", type: "in", tooltip: "Rotate the image clockwise by the given number of degrees." },
-      { id: nanoid(), format: "-crop $1x$2+$3+$4", template: "Crop to $1n×$2n at ($3n,$4n) (@{v[0] * v[1]} px)", value: ["300", "300", "0", "0"], name: "Crop", type: "in", tooltip: "Crop the image to the specified size starting from the given coordinates." },
+      { id: nanoid(), format: "-crop $1x$2+$3+$4", template: "Crop to $1n×$2n at ($3n,$4n) (@{v[0] * v[1]}@ px)", value: ["300", "300", "0", "0"], name: "Crop", type: "in", tooltip: "Crop the image to the specified size starting from the given coordinates." },
       { id: nanoid(), format: "-flip", template: "Flip vertically", value: [], name: "Flip Vertical", type: "in", tooltip: "Flip the image along the horizontal axis (vertically)." },
       { id: nanoid(), format: "-flop", template: "Flip horizontally", value: [], name: "Flip Horizontal", type: "in", tooltip: "Flip the image along the vertical axis (horizontally)." },
       { id: nanoid(), format: "-trim", template: "Trim edges", value: [], name: "Trim", type: "in", tooltip: "Remove edges that are the same color as the corners of the image." },
-      { id: nanoid(), format: "-border $1", template: "Add $1n px border (total width increase: @{v[0] * 2}px)", value: ["5"], name: "Border", type: "in", tooltip: "Add a uniform border of the specified width around the image." }
+      { id: nanoid(), format: "-border $1", template: "Add $1n px border (total width increase: @{v[0] * 2}@px)", value: ["5"], name: "Border", type: "in", tooltip: "Add a uniform border of the specified width around the image." }
     ]
   },
   {
@@ -85,7 +87,7 @@ export const all_templates_grouped = [
   },
   {
     name: "Other / Metadata", commands: [
-      { id: nanoid(), format: "-quality $1", template: "JPEG quality $1n (Compression: @{100 - v[0]}%)", value: ["85"], name: "JPEG Quality", type: "po", tooltip: "Set the output image quality (mostly for JPEG)." },
+      { id: nanoid(), format: "-quality $1", template: "JPEG quality $1n (Compression: @{100 - v[0]}@%)", value: ["85"], name: "JPEG Quality", type: "po", tooltip: "Set the output image quality (mostly for JPEG)." },
       { id: nanoid(), format: "-strip", template: "Strip metadata", value: [], name: "Strip Metadata", type: "in", tooltip: "Remove all metadata such as EXIF, IPTC, and profiles from the image." },
       { id: nanoid(), format: "-depth $1", template: "Bit depth $1n", value: ["8"], name: "Bit Depth", type: "pi", tooltip: "Set the number of bits per color channel." },
       { id: nanoid(), format: "-alpha $1", template: "Alpha: \"$1t\"", value: ["on"], name: "Alpha Channel", type: "in", tooltip: "Enable or disable the alpha (transparency) channel." },

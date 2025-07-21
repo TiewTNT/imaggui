@@ -3,5 +3,3 @@ python-multipart
 uvicorn
 werkzeug
 psutil
-regex
-pillow

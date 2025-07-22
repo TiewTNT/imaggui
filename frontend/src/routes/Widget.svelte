@@ -26,7 +26,7 @@
     return rawTokens.reduce<Part[]>((acc, token) => {
       const inputMatch = token.match(/^\$([0-9]+)([a-rt-zA-RT-Z])$/);
       const selectMatch = token.match(/^\$([0-9]+)s\{(.*:.*;)*\}$/);
-      const evalMatch = token.match(/^\@\{(.*)\}$/);
+      const evalMatch = token.match(/^\@\{(.*)\}\@$/);
 
       if (inputMatch) {
         const index = parseInt(inputMatch[1], 10) - 1;

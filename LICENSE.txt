@@ -5,11 +5,11 @@ Copyright (c) 2025 Tiew Sirithanachai
 =====================
 
 This license governs the use and distribution of the software referred to herein as 
-“ImagGUI,” excluding any dependencies or external works.
+“IMagGUI,” excluding any dependencies or external works.
 
 **1. Grant of Rights**  
 Permission is hereby granted, free of charge, to any person obtaining a copy 
-of ImagGUI (the “Software”), to use, copy, modify, and distribute copies 
+of IMagGUI (the “Software”), to use, copy, modify, and distribute copies 
 of the Software, in whole or in part, for any purpose, without attribution to the 
 original author being required.
 

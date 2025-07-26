@@ -10,7 +10,7 @@ echo "Beginning selective purge."
 docker compose down --remove-orphans
 
 # Remove only volumes with "frontend" in the name
-for vol in $(docker volume ls --format '{{.Name}}' | grep -w frontend); do
+for vol in $(docker volume ls --format '{{.Name}}' | grep frontend); do
 	echo "Deleting volume: $vol"
 	docker volume rm "$vol"
 done

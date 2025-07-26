@@ -2,13 +2,13 @@ FROM python:3.11-alpine
 
 # 1) Install ImageMagick, Fontconfig and DejaVu fonts
 RUN apk add --no-cache \
-      imagemagick \
-      fontconfig \
-      libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript \
-      build-base python3-dev libffi-dev musl-dev\
-      font-dejavu \
-      mkfontscale \
-      mkfontdir 
+    imagemagick \
+    fontconfig \
+    libpng libjpeg-turbo libwebp libheif openjpeg tiff ghostscript \
+    build-base python3-dev libffi-dev musl-dev \
+    font-dejavu \
+    mkfontscale mkfontdir \
+    librsvg
 
 # Rebuild font cache so ImageMagick can auto-discover DejaVu
 RUN fc-cache -f

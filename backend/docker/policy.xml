@@ -6,8 +6,12 @@
     <policy domain="coder" rights="none" pattern="URL" />
     <policy domain="coder" rights="none" pattern="HTTPS" />
     <policy domain="coder" rights="read|write" pattern="SVG" />
+    <policy domain="resource" name="memory" value="128MiB"/>
+    <policy domain="resource" name="map" value="128MiB"/>
+    <policy domain="resource" name="time" value="20"/>
+    <policy domain="resource" name="disk" value="50GiB"/>
     <policy domain="delegate" rights="read|write" pattern="rsvg-convert" />
     <policy domain="delegate" rights="read|write" pattern="dot" />
     <policy domain="delegate" rights="read|write" pattern="potrace" />
-    <policy domain="delegate" rights="none" pattern="*" />
+    <!-- <policy domain="delegate" rights="none" pattern="*" /> -->
 </policymap>

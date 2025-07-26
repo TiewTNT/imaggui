@@ -1,12 +1,16 @@
 #!/bin/bash
 
-echo "Beginning selective purge. Only frontend sinners will be punished..."
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+export COMPOSE_BAKE=true
+
+echo "Beginning selective purge."
 
 # Stop containers, but don't kill all volumes
 docker compose down --remove-orphans
 
 # Remove only volumes with "frontend" in the name
-for vol in $(docker volume ls --format '{{.Name}}' | grep frontend); do
+for vol in $(docker volume ls --format '{{.Name}}' | grep -w frontend); do
 	echo "Deleting volume: $vol"
 	docker volume rm "$vol"
 done
@@ -14,7 +18,7 @@ done
 # Clear frontend build if present
 rm -rf ./frontend/build
 
-# Prune networks to keep Docker's haunted memory clean
+# Prune networks to keep Docker's memory clean
 docker network prune -f
 
 echo "Running: docker compose up --build -d"

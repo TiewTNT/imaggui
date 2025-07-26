@@ -36,4 +36,4 @@ def parse(text: str):
 
 if __name__ == "__main__":
     # print(get_image_format(Path(r'C:\Users\tntti\Downloads\Portrait-of-a-cat-with-whiskers-visible(10).png')))
-    print(parse(r"@{2*2}@x@{2*2}@", {}))
+    print(parse(r"@{2*2}@x@{2*2}@"))

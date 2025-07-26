@@ -152,10 +152,14 @@
 		class="min-w-[768px] sm:min-w-[1024px] lg:min-w-[1280px] mx-auto min-h-screen flex flex-col items-center bg-surface-900 px-4 pb-20"
 	>
 		<div
-			class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800/90 rounded-3xl shadow-2xl mt-12"
+			class="w-full max-w-5xl space-y-10 p-6 sm:p-10 bg-surface-800 rounded-3xl shadow-2xl mt-12"
 		>
 			<h1 class="text-4xl font-extrabold text-surface-50 tracking-tight">
+				<div class="flex">
 				IMagGUI
+				<span class="w-1"></span>
+				<img src="/favicon.svg" alt="" class="saturate-50">
+				</div>
 			</h1>
 
 			<FileUpload
@@ -169,7 +173,7 @@
 			<div class="flex flex-wrap gap-4 items-center">
 				<select
 					bind:value={outputFormat}
-					class="bg-primary-600 hover:bg-primary-500 text-primary-50 font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
+					class="bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg px-6 py-2 rounded-xl shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
 				>
 					<option value="png">PNG</option>
 					<option value="jpg">JPG</option>
@@ -183,7 +187,7 @@
 					on:click={upload}
 					disabled={!files.length}
 				>
-					Upload
+					Process
 				</button>
 				<div class="grid">
 				<a href="/about" class="text-primary-200">About</a>
@@ -222,13 +226,14 @@
 				{/each}
 			</section>
 
-			<div class="flex flex-col gap-10 pt-8">
+			<div class="flex flex-col gap-4">
 				{#each all_templates_grouped as group}
-					<div class="pt-6 border-t border-surface-600">
-						<h2 class="text-xl font-bold text-surface-100 mb-4">
+					<div class="pt-2 ">
+						<details class="border-b border-surface-600 m-auto">
+						<summary class="text-xl pb-4 font-bold text-surface-100">
 							{group.name}
-						</h2>
-						<div class="flex flex-wrap justify-center gap-4">
+						</summary>
+						<div class="flex flex-wrap justify-center gap-4 pb-4">
 							{#each group.commands as t}
 								<button
 									class="btn bg-primary-700 hover:bg-primary-600 text-white font-medium px-5 py-2 rounded-xl shadow-md transition-transform hover:scale-105"
@@ -246,6 +251,7 @@
 								</button>
 							{/each}
 						</div>
+						</details>
 					</div>
 				{/each}
 			</div>
@@ -254,7 +260,7 @@
 </div>
 
 <div
-	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto"
+	class="sticky bottom-4 left-4 text-primary-50 text-xs px-3 py-1 rounded-md bg-surface-700/80 backdrop-blur-md z-50 select-none opacity-60 m-4 w-auto inline-block"
 >
-	1.7.4β
+	1.7.6β
 </div>

@@ -5,5 +5,9 @@
     <policy domain="coder" rights="none" pattern="TEXT" />
     <policy domain="coder" rights="none" pattern="URL" />
     <policy domain="coder" rights="none" pattern="HTTPS" />
+    <policy domain="coder" rights="read|write" pattern="SVG" />
+    <policy domain="delegate" rights="read|write" pattern="rsvg-convert" />
+    <policy domain="delegate" rights="read|write" pattern="dot" />
+    <policy domain="delegate" rights="read|write" pattern="potrace" />
     <policy domain="delegate" rights="none" pattern="*" />
 </policymap>

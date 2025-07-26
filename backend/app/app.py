@@ -69,6 +69,8 @@ async def process_file(f, input_format, output_format, tools):
                 else:
                     flags_pre_input.extend([v for v in flag if v])
             for flag in after_input:
+                flag = parse(flag)
+
                 print('[DEBUG] Using', flag)
                 if type(flag) == str:
                     if flag:

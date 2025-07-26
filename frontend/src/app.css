@@ -14,7 +14,6 @@
   box-shadow: none !important;
 }
 
-
 /* optional: suppress dragging preview */
 .dnd-ghost {
   opacity: 0.5;
